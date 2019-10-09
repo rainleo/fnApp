@@ -1,0 +1,46 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/login/login",
+    "pages/index/guide",
+    "pages/register/register",
+    "pages/work/work",
+    "pages/todo/todo",
+    "pages/my/my",
+    "pages/principle/principle"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#007AFF",
+    "borderStyle": "black",
+    "backgroundColor": "#F8F8F8",
+    "list": [
+      {
+        "pagePath": "pages/work/work",
+        "iconPath": "static/img/tabbar/work.png",
+        "selectedIconPath": "static/img/tabbar/work.png",
+        "text": "办公"
+      },
+      {
+        "pagePath": "pages/todo/todo",
+        "iconPath": "static/img/tabbar/todo.png",
+        "selectedIconPath": "static/img/tabbar/todo.png",
+        "text": "代办"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "iconPath": "static/img/tabbar/my.png",
+        "selectedIconPath": "static/img/tabbar/my.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "usingComponents": {}
+}

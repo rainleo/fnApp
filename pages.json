@@ -1,0 +1,93 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "启动页",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		}
+        ,{
+            "path" : "pages/login/login",
+            "style" : {
+            	"navigationBarTitleText" : "登录",
+            	"app-plus":{
+            		"bounce":"none"
+            	}
+            }
+        }
+        ,{
+           "path": "pages/index/guide",
+           "style": {
+           	"navigationBarTitleText": "",
+           	"app-plus": {
+           		"titleNView": false
+           	}
+           }
+        }
+        ,{
+            "path" : "pages/register/register",
+            "style" : {
+            	"navigationBarTitleText" : "注册",
+            	"app-plus":{
+            		"bounce":"none"
+            	}
+            }
+        }
+        ,{
+            "path" : "pages/work/work",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/todo/todo",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/my/my",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/principle/principle",
+            "style" : {
+            	"navigationBarTitleText" : "用户协议",
+            	"app-plus":{
+            		"bounce":"none"
+            	}
+            }
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color" : "#7A7E83",
+		"selectedColor" : "#007AFF",
+		"borderStyle" : "black",
+		"backgroundColor" : "#F8F8F8",
+		"list":[
+			{
+			    "pagePath" : "pages/work/work",
+			    "iconPath" : "static/img/tabbar/work.png",
+			    "selectedIconPath" : "static/img/tabbar/work.png",
+			    "text" : "办公"
+			},
+			{
+			    "pagePath" : "pages/todo/todo",
+			    "iconPath" : "static/img/tabbar/todo.png",
+			    "selectedIconPath" : "static/img/tabbar/todo.png",
+			    "text" : "代办"
+			},
+			{
+			    "pagePath" : "pages/my/my",
+			    "iconPath" : "static/img/tabbar/my.png",
+			    "selectedIconPath" : "static/img/tabbar/my.png",
+			    "text" : "我的"
+			}
+		]
+	}
+}
