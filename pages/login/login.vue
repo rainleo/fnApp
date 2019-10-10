@@ -39,6 +39,24 @@
 
 			};
 		},
+		onLoad:function(){
+			const value = uni.getStorageSync('loginFlag');
+			if (value) {
+				if (value == true) {
+					uni.switchTab({
+						url: '../todo/todo'
+					});
+				} 
+			} else{
+				uni.setStorage({
+				    key: 'loginFlag',
+				    data: false,
+				    success: function() {
+						console.log('存储loginFlag');
+					}
+				});
+			}
+		},
 		methods:{
 			defaultHandlerLogin:function(){
 				this.login.loading = true;

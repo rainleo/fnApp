@@ -56,7 +56,7 @@
 						key: 'launchFlag',
 						data: true,
 				});
-				console.log("11");
+				
 				uni.redirectTo({
 					url: '/pages/login/login'
 				});

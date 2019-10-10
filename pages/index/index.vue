@@ -22,13 +22,14 @@
 				 */
 				try {
 				    const value = uni.getStorageSync('launchFlag');
-				    if (value) {
+				    console.log(value);
+					if (value) {
 				        if (value == true) {
 				            uni.redirectTo({
 				                url: '/pages/login/login'
 				            });
 				        } else {
-				            uni.redirectTo({
+				            uni.navigateTo({
 				                url: '/pages/index/guide'
 				            });
 				        }
