@@ -22,7 +22,7 @@
 				 */
 				try {
 				    const value = uni.getStorageSync('launchFlag');
-				    console.log(value);
+					console.log(value);
 					if (value) {
 				        if (value == true) {
 				            uni.redirectTo({

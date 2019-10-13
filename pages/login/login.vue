@@ -8,7 +8,7 @@
 		<view class="content">
 			<view class="has-mglr-10 ">
 				<view class=" has-mgtb-10 ">
-					<input type="number" maxlength="11" v-model="login.phone" placeholder="请输入手机号" class="is-input1 " @input="BindInput" data-val="phone" />
+					<input type="number" maxlength="11" v-model="login.username" placeholder="请输入手机号" class="is-input1 " @input="BindInput" data-val="username" />
 				</view>
 				<view class=" has-radius has-mgtb-10">
 					<input v-model="login.password" placeholder="请输入登录密码" class="is-input1"  @input="BindInput" data-val="password"/>
@@ -34,7 +34,7 @@
 			return {
 				login: {
 					loading: false,
-					phone:"",
+					username:"",
 					password:""
 				},
 
@@ -44,6 +44,7 @@
 			const value = this.$cache.get('_loginFlag');
 			if (value) {
 				if (value == true) {
+					console.log("value:"+value);
 					uni.switchTab({
 						url: '../todo/todo'
 					});
@@ -56,10 +57,17 @@
 		methods:{
 			defaultHandlerLogin:function(){
 				this.login.loading = true;
-				setTimeout((e=>{
+				console.log(JSON.stringify(this.login));
+				this.$minApi.login(JSON.stringify(this.login)).then(res=>{
+					this.$cache.set('_loginFlag', true)
+					this.$cache.set('_token', res.token)
+					this.$openPage({
+						name: 'todo'
+					})
+				}).catch(err =>{
 					this.login.loading = false;
-				}),1500);
-				console.log(JSON.stringify(this.login)); 
+				})
+				 
 			},
 			BindInput:function(e){
 				var dataval = e.currentTarget.dataset.val;

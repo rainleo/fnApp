@@ -14,7 +14,13 @@ const router = new MinRouter({
 		{
 			path: 'pages/register/register',
 			name: 'register'
+		},
+		{
+			path: 'pages/todo/todo',
+			type: 'switchTab',
+			name: 'todo'
 		}
+		
 	] 
 })
 router.beforeEach((to, from, next) => {

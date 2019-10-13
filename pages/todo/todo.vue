@@ -11,6 +11,15 @@
 				
 			}
 		},
+		// onUnload:function(){
+		// 	this.$minApi.myinfo().then(res=>{
+		// 		console.log("111");
+		// 		this.$cache.set('_loginFlag', true)
+		// 		this.$cache.set('_token', res.token)
+		// 	}).catch(err =>{
+		// 		this.login.loading = false;
+		// 	})
+		// },
 		methods: {
 			
 		}
