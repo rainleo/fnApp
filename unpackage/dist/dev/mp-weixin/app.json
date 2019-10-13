@@ -42,5 +42,8 @@
       }
     ]
   },
-  "usingComponents": {}
+  "usingComponents": {
+    "min-a": "/components/min-a"
+  },
+  "sitemapLocation": "sitemap91.json"
 }

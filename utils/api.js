@@ -17,8 +17,21 @@ minRequest.interceptors.request((request) => {
 
 // 响应拦截器
 minRequest.interceptors.response((response) => {
-	console.log("返回值判断");
-  return response.data
+	console.log(response);
+	if (response.statusCode === 200) {
+		return response.data
+	} else{
+		uni.showToast({
+		    title: response.data.message,
+		    duration: 2000
+		});
+		uni.hideToast();
+		uni.redirectTo({
+			url: '/pages/login/login',
+		});
+	}
+	
+  
 })
 
 // 设置默认配置
