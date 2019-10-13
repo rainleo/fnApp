@@ -42,6 +42,10 @@
 					codeTime: 60
 				},
 				timerId: null,
+				code: {
+					uuid: '',
+					img: ''
+				},
 			};
 		},
 		methods: {
@@ -50,20 +54,29 @@
 					console.log('message：', "别着急！短信已经发送了~");
 					return false;
 				}
-				this.smsbtn.status = true; // 这段代码其实应该加在你request请求 短信发送成功后 
-				this.timerId = setInterval(() => {
-						var codeTime = this.smsbtn.codeTime;
-						codeTime--;
-						this.smsbtn.codeTime = codeTime;
-						this.smsbtn.text = codeTime + "S";
-						if (codeTime < 1) {
-							clearInterval(this.timerId);
-							this.smsbtn.text = "重新获取";
-							this.smsbtn.codeTime = 60;
-							this.smsbtn.status = false;
-						}
-					},
-					1000);
+				this.$minApi.vcode( ).then(res => {
+					this.code = res;
+					this.smsbtn.status = true; // 这段代码其实应该加在你request请求 短信发送成功后 
+					console.log(res);
+					this.timerId = setInterval(() => {
+							var codeTime = this.smsbtn.codeTime;
+							codeTime--;
+							this.smsbtn.codeTime = codeTime;
+							this.smsbtn.text = codeTime + "S";
+							if (codeTime < 1) {
+								clearInterval(this.timerId);
+								this.smsbtn.text = "重新获取";
+								this.smsbtn.codeTime = 60;
+								this.smsbtn.status = false;
+							}
+						},
+						1000);
+					
+				}).catch(err => {
+					console.log(err)
+				})
+				
+
 				return false;
 			}
 

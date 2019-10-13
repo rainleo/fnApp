@@ -20,9 +20,10 @@
 			</view>
 		</view>
 		<view class="is-20vh has-mgt-80 content">
-			<navigator url="../register/register" class=" has-radius is-right is-grey has-mgr-20" hover-class="">
+			<!-- <navigator url="../register/register" class=" has-radius is-right is-grey has-mgr-20" hover-class="">
 				<text>没有账号？</text><text class="is-blue">点击注册</text>
-			</navigator>
+			</navigator> -->
+			<min-a to="register" class=" has-radius is-right is-grey has-mgr-20" hover-class=""><text>没有账号？</text><text class="is-blue">点击注册</text></min-a>
 		</view>
 	</view>
 </template>
@@ -40,7 +41,7 @@
 			};
 		},
 		onLoad:function(){
-			const value = uni.getStorageSync('loginFlag');
+			const value = this.$cache.get('_loginFlag');
 			if (value) {
 				if (value == true) {
 					uni.switchTab({
@@ -48,13 +49,8 @@
 					});
 				} 
 			} else{
-				uni.setStorage({
-				    key: 'loginFlag',
-				    data: false,
-				    success: function() {
-						console.log('存储loginFlag');
-					}
-				});
+				this.$cache.set('_loginFlag', false)
+				console.log(this.$cache.get('_loginFlag'));	
 			}
 		},
 		methods:{
