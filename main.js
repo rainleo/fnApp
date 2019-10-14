@@ -24,7 +24,8 @@ Vue.use(MinCache)
 
 const app = new Vue({
     ...App,
-	minRequest,
-	minRouter
+	minRouter,
+	minRequest
+	
 })
 app.$mount()

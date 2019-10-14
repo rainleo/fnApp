@@ -1,5 +1,6 @@
 import MinRequest from './MinRequest'
 import MinCache from './MinCache'
+import MinRouter from './router'
 const minRequest = new MinRequest()
 const cache = new MinCache()
 // 请求拦截器
@@ -21,14 +22,36 @@ minRequest.interceptors.response((response) => {
 	if (response.statusCode === 200) {
 		return response.data
 	} else{
-		uni.showToast({
-		    title: response.data.message,
-		    duration: 2000
-		});
-		uni.hideToast();
-		uni.redirectTo({
-			url: '/pages/login/login',
-		});
+		uni.showModal({
+			content: response.data.message,
+			confirmText: "确定",
+			showCancel: false,
+			complete() {
+				console.log(response.data.message);
+				if(response.data.status === 401){
+					console.log(401);
+					var pages = getCurrentPages();
+					var currPage = pages[pages.length - 1]; //当前页面
+					//var prevPage = pages[pages.length - 2]; //上一个页面
+					console.log(currPage.route);
+					cache.set('url',currPage.route);
+					uni.navigateTo({
+						url: '/pages/login/login'
+					});
+					cache.set('_loginFlag',false)
+					cache.delete('_token')
+				}
+			}
+		})
+		// uni.showToast({
+		//     title: response.data.message,
+		//     duration: 2000,
+		// 	complete: () => {}
+		// });
+		
+		
+		
+		
 	}
 	
   

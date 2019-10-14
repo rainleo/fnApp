@@ -37,11 +37,15 @@
 					username:"",
 					password:""
 				},
+				url:'',
 
 			};
 		},
 		onLoad:function(){
 			const value = this.$cache.get('_loginFlag');
+			//this.url=this.$parseURL();
+			console.log("url");
+			console.log(this.url);
 			if (value) {
 				if (value == true) {
 					console.log("value:"+value);
@@ -61,9 +65,25 @@
 				this.$minApi.login(JSON.stringify(this.login)).then(res=>{
 					this.$cache.set('_loginFlag', true)
 					this.$cache.set('_token', res.token)
-					this.$openPage({
-						name: 'todo'
-					})
+					var pages = getCurrentPages();
+					var currPage = pages[pages.length - 1]; //当前页面
+					this.url=this.$cache.get('url');
+					if(this.url != null && this.url != currPage.route ){
+						console.log("lll");
+						const url = this.$cache.get('url');
+						this.$cache.delete('url');
+						
+						uni.switchTab({
+							url: '/'+url,
+						});
+						
+						
+					}else{
+						this.$openPage({
+							name: 'todo'
+						})
+					}
+					
 				}).catch(err =>{
 					this.login.loading = false;
 				})

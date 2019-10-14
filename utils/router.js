@@ -19,6 +19,11 @@ const router = new MinRouter({
 			path: 'pages/todo/todo',
 			type: 'switchTab',
 			name: 'todo'
+		},
+		{
+			path: 'pages/login/login',
+			type: 'navigateTo',
+			name: 'login'
 		}
 		
 	] 
@@ -32,4 +37,6 @@ router.beforeEach((to, from, next) => {
 	}
 })
 
+
 export default router
+

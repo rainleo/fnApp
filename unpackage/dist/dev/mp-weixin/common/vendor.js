@@ -14,9 +14,9 @@ var _App = _interopRequireDefault(__webpack_require__(/*! ./App */ 5));
 var _MinRequest = _interopRequireDefault(__webpack_require__(/*! ./utils/MinRequest */ 11));
 var _api = _interopRequireDefault(__webpack_require__(/*! ./utils/api */ 12));
 
-var _MinRouter = _interopRequireDefault(__webpack_require__(/*! ./utils/MinRouter */ 14));
+var _MinRouter = _interopRequireDefault(__webpack_require__(/*! ./utils/MinRouter */ 15));
 
-var _router = _interopRequireDefault(__webpack_require__(/*! ./utils/router */ 15));
+var _router = _interopRequireDefault(__webpack_require__(/*! ./utils/router */ 14));
 
 var _MinCache = _interopRequireDefault(__webpack_require__(/*! ./utils/MinCache */ 13));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var mina = function mina() {return __webpack_require__.e(/*! import() | components/min-a */ "components/min-a").then(__webpack_require__.bind(null, /*! ./components/min-a.vue */ 70));};
 
@@ -34,8 +34,9 @@ _vue.default.use(_MinCache.default);
 
 var app = new _vue.default(_objectSpread({},
 _App.default, {
-  minRequest: _api.default,
-  minRouter: _router.default }));
+  minRouter: _router.default,
+  minRequest: _api.default }));
+
 
 createApp(app).$mount();
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createApp"]))
@@ -7740,7 +7741,8 @@ MinRequest;exports.default = _default;
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _MinRequest = _interopRequireDefault(__webpack_require__(/*! ./MinRequest */ 11));
-var _MinCache = _interopRequireDefault(__webpack_require__(/*! ./MinCache */ 13));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
+var _MinCache = _interopRequireDefault(__webpack_require__(/*! ./MinCache */ 13));
+var _router = _interopRequireDefault(__webpack_require__(/*! ./router */ 14));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 var minRequest = new _MinRequest.default();
 var cache = new _MinCache.default();
 // 请求拦截器
@@ -7762,13 +7764,34 @@ minRequest.interceptors.response(function (response) {
   if (response.statusCode === 200) {
     return response.data;
   } else {
+    console.log("");
     uni.showToast({
       title: response.data.message,
       duration: 2000 });
 
     uni.hideToast();
-    uni.redirectTo({
-      url: '/pages/login/login' });
+    if (response.data.status === 401) {
+      console.log(401);
+      // uni.navigateTo({
+      // 	url: '/pages/login/login',
+      // });
+      var pages = getCurrentPages();
+      var currPage = pages[pages.length - 1]; //当前页面
+      //var prevPage = pages[pages.length - 2]; //上一个页面
+      console.log(currPage.route);
+      //console.log(prevPage.route);
+      console.log('22222');
+      cache.set('url', currPage.route);
+      // MinRequest.open({
+      // 		name: 'login',
+      // 		query: {url: currPage.route}
+      // 	})
+      uni.navigateTo({
+        url: '/pages/login/login' });
+
+      cache.set('_loginFlag', false);
+      cache.delete('_token');
+    }
 
   }
 
@@ -7909,6 +7932,57 @@ MinCache;exports.default = _default;
 
 /***/ }),
 /* 14 */
+/*!*********************************************************************!*\
+  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/utils/router.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _MinRouter = _interopRequireDefault(__webpack_require__(/*! ./MinRouter */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+// 配置路由
+var router = new _MinRouter.default({
+  routes: [
+  {
+    // 页面路径
+    path: 'pages/index/index',
+    // type必须是以下的值['navigateTo', 'switchTab', 'reLaunch', 'redirectTo']
+    // 跳转方式(默认跳转方式)
+    type: 'navigateTo',
+    name: 'index' },
+
+  {
+    path: 'pages/register/register',
+    name: 'register' },
+
+  {
+    path: 'pages/todo/todo',
+    type: 'switchTab',
+    name: 'todo' },
+
+  {
+    path: 'pages/login/login',
+    type: 'navigateTo',
+    name: 'login' }] });
+
+
+
+
+router.beforeEach(function (to, from, next) {
+  if (from === 'pages/index/index' && to === 'pages/my/index') {
+    // 不希望跳转就传false
+    next(false);
+    // 跳到指定页面
+    // next('pages/test/index')
+  }
+});var _default =
+
+
+router;exports.default = _default;
+
+/***/ }),
+/* 15 */
 /*!************************************************************************!*\
   !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/utils/MinRouter.js ***!
   \************************************************************************/
@@ -8057,51 +8131,6 @@ MinRouter.prototype.beforeEach = beforeEach;var _default =
 
 MinRouter;exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-/* 15 */
-/*!*********************************************************************!*\
-  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/utils/router.js ***!
-  \*********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _MinRouter = _interopRequireDefault(__webpack_require__(/*! ./MinRouter */ 14));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-// 配置路由
-var router = new _MinRouter.default({
-  routes: [
-  {
-    // 页面路径
-    path: 'pages/index/index',
-    // type必须是以下的值['navigateTo', 'switchTab', 'reLaunch', 'redirectTo']
-    // 跳转方式(默认跳转方式)
-    type: 'navigateTo',
-    name: 'index' },
-
-  {
-    path: 'pages/register/register',
-    name: 'register' },
-
-  {
-    path: 'pages/todo/todo',
-    type: 'switchTab',
-    name: 'todo' }] });
-
-
-
-
-router.beforeEach(function (to, from, next) {
-  if (from === 'pages/index/index' && to === 'pages/my/index') {
-    // 不希望跳转就传false
-    next(false);
-    // 跳到指定页面
-    // next('pages/test/index')
-  }
-});var _default =
-
-router;exports.default = _default;
 
 /***/ }),
 /* 16 */

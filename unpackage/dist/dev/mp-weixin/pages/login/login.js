@@ -142,13 +142,17 @@ var _default =
       login: {
         loading: false,
         username: "",
-        password: "" } };
+        password: "" },
 
+      url: '' };
 
 
   },
   onLoad: function onLoad() {
     var value = this.$cache.get('_loginFlag');
+    //this.url=this.$parseURL();
+    console.log("url");
+    console.log(this.url);
     if (value) {
       if (value == true) {
         console.log("value:" + value);
@@ -168,8 +172,28 @@ var _default =
       this.$minApi.login(JSON.stringify(this.login)).then(function (res) {
         _this.$cache.set('_loginFlag', true);
         _this.$cache.set('_token', res.token);
-        _this.$openPage({
-          name: 'todo' });
+        var pages = getCurrentPages();
+        var currPage = pages[pages.length - 1]; //当前页面
+        //var prevPage = pages[pages.length - 2]; //上一个页面
+        console.log(currPage.route);
+        _this.url = _this.$cache.get('url');
+        console.log(_this.url);
+        if (_this.url != null && _this.url != currPage.route) {
+          console.log(_this.url);
+          console.log("lll");
+          var url = _this.$cache.get('url');
+          _this.$cache.delete('url');
+
+          uni.switchTab({
+            url: '/' + url });
+
+
+
+        } else {
+          _this.$openPage({
+            name: 'todo' });
+
+        }
 
       }).catch(function (err) {
         _this.login.loading = false;
