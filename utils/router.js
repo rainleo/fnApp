@@ -24,7 +24,40 @@ const router = new MinRouter({
 			path: 'pages/login/login',
 			type: 'navigateTo',
 			name: 'login'
-		}
+		},
+		{
+			path: 'pages/modify/modify',
+			type: 'navigateTo',
+			name: 'modify'
+		},
+		{
+			path: 'pages/my/info/info',
+			type: 'navigateTo',
+			name: 'info'
+		},
+		{
+			path: 'pages/work/work',
+			type: 'switchTab',
+			name: 'work'
+		},
+		{
+			path: 'pages/todo/approve/approve',
+			type: 'navigateTo',
+			name: 'approve'
+		},
+		{
+			path: 'pages/work/addwork/addwork',
+			type: 'navigateTo',
+			name: 'addwork'
+		},
+		{
+			path: 'pages/todo/financial/financial',
+			type: 'navigateTo',
+			name: 'financial'
+		},
+		
+		
+		
 		
 	] 
 })

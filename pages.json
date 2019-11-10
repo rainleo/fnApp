@@ -38,15 +38,21 @@
         }
         ,{
             "path" : "pages/work/work",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText" : "业务管理"
+			}
         }
         ,{
             "path" : "pages/todo/todo",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText" : "代办事项"
+			}
         }
         ,{
             "path" : "pages/my/my",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText" : "个人中心"
+			}
         }
         ,{
             "path" : "pages/principle/principle",
@@ -56,6 +62,36 @@
             		"bounce":"none"
             	}
             }
+        }
+        ,{
+            "path" : "pages/modify/modify",
+            "style" : {
+				"navigationBarTitleText" : "修改密码"
+			}
+        }
+        ,{
+            "path" : "pages/my/info/info",
+            "style" : {
+				"navigationBarTitleText" : "个人信息"
+			}
+        }
+        ,{
+            "path" : "pages/work/addwork/addwork",
+            "style" : {
+					"navigationBarTitleText" : "新建代办"
+			}
+        }
+        ,{
+            "path" : "pages/todo/approve/approve",
+            "style" : {
+				"navigationBarTitleText" : "审批"
+			}
+        }
+        ,{
+            "path" : "pages/todo/financial/financial",
+            "style" : {
+				"navigationBarTitleText" : "财务申请"
+			}
         }
     ],
 	"globalStyle": {
@@ -71,16 +107,16 @@
 		"backgroundColor" : "#F8F8F8",
 		"list":[
 			{
-			    "pagePath" : "pages/work/work",
-			    "iconPath" : "static/img/tabbar/work.png",
-			    "selectedIconPath" : "static/img/tabbar/work.png",
-			    "text" : "办公"
-			},
-			{
 			    "pagePath" : "pages/todo/todo",
 			    "iconPath" : "static/img/tabbar/todo.png",
 			    "selectedIconPath" : "static/img/tabbar/todo.png",
 			    "text" : "代办"
+			},
+			{
+			    "pagePath" : "pages/work/work",
+			    "iconPath" : "static/img/tabbar/work.png",
+			    "selectedIconPath" : "static/img/tabbar/work.png",
+			    "text" : "办公"
 			},
 			{
 			    "pagePath" : "pages/my/my",

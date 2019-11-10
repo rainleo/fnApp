@@ -16,7 +16,7 @@
 				<scroll-view style="height: 100%;" scroll-y="true" @scrolltolower="lower1" scroll-with-animation :scroll-into-view="toView">
 				<view :id="'top'+listIndex" style="width: 100%;height: 180upx;">边距盒子</view>
 				<view class='content'>
-					<view class='card' v-for="(item,index) in listItem" v-if="listItem.length > 0" :key="index">
+					<view class='card' v-for="(item,index) in listItem" v-if="listItem.length > 0" :key="index" @click="dealApprove(1)">
 						标题：
 						<view class="uni-media-list-body">
 							<view class="uni-media-list-text-bottom">
@@ -39,10 +39,10 @@
 </template>
 
 <script>
-const util = require('../../utils/util.js');
-import refresh from '../../components/refresh.vue';
-import navTab from '../../components/navTab.vue';
-//import tabBar4 from '../../components/tabBar4.vue';
+const util = require('../../../utils/util.js');
+import refresh from '../../../components/refresh.vue';
+import navTab from '../../../components/navTab.vue';
+//import tabBar4 from '../../../components/tabBar4.vue';
 export default {
 	components: {refresh,navTab},
 	data() {
@@ -50,7 +50,7 @@ export default {
 			toView:'',//回到顶部id
 		    currentTab: 0, //sweiper所在页
 			pages:[1,1], //第几页存储 
-			tabTitle:['我的工作','需要协助'], //导航栏格式
+			tabTitle:['申请','报销'], //导航栏格式
 			list: [[1, 2, 3, 4, 5, 6],['a', 'b', 'c', 'd', 'e', 'f']] //数据格式
 		  };
 	},
@@ -69,6 +69,7 @@ export default {
 		changeTab(index){
 			this.currentTab = index
 		},
+		
 		// 其他请求事件 当然刷新和其他请求可以写一起 多一层判断。
 		isRequest(pages) {
 			return new Promise((resolve, reject) => {
@@ -93,6 +94,9 @@ export default {
 			}else{
 				this.$refs.navTab.longClick(index)
 			}
+		},
+		dealApprove: function(e) {
+			console.log(e);
 		},
 		// 加载更多 util.throttle为防抖函数
 		lower1: util.throttle(function(e) {

@@ -59,7 +59,7 @@ minRequest.interceptors.response((response) => {
 
 // 设置默认配置
 minRequest.setConfig((config) => {
-  config.baseURL = 'http://localhost:8000'
+  config.baseURL = 'http://leo.free.idcfengye.com'
   return config
 })
 
@@ -73,6 +73,12 @@ export default {
 	  return minRequest.get('/auth/info')
 	},
 	login (data) {
+		return minRequest.post('/auth/applogin',data)
+	},
+	register (data) {
+		return minRequest.post('/auth/applogin',data)
+	},
+	modifyPwd (data) {
 		return minRequest.post('/auth/applogin',data)
 	}
   }

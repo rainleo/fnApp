@@ -2,25 +2,25 @@
 	<view class="s-page-wrapper is-100vh">
 		<view class="is-33vh has-mgt-10">
 			<view class="is-flex is-column is-justify-center  is-align-center is-height-100">
-				<image src="../../static/img/common/logo.jpg" mode="aspectFit" class="logoimg"></image>
+				<image src="../../static/img/common/logo.png" mode="aspectFit" class="logoimg"></image>
 			</view>
 		</view>
 		<view class="registercontent">
 			<view class="has-mglr-10 ">
 				<view class=" has-mgtb-10 ">
-					<input type="number" maxlength="11" placeholder="请输入手机号" class="is-input1 " />
+					<input type="number" v-model="phone" maxlength="11" placeholder="请输入手机号" class="is-input1 " />
 				</view>
 				<view class=" has-mgtb-10 ">
-					<input type="number" maxlength="6" placeholder="短信验证码" class="is-input1 " />
+					<input type="number" maxlength="6" v-model="code" placeholder="短信验证码" class="is-input1 " />
 					<view class="codeimg" @tap="getsmscode">{{smsbtn.text}}</view>
 				</view>
 
 				<view class=" has-radius has-mgtb-10">
-					<input placeholder="请输入登录密码" :password="true" class="is-input1" />
+					<input placeholder="请输入登录密码" :password="true" v-model="pwd" class="is-input1" />
 
 				</view>
 				<view class=" registerbtn has-radius has-mgtb-20">
-					<button>注 册</button>
+					<button @click="register">注 册</button>
 				</view>
 			</view>
 		</view>
@@ -33,6 +33,7 @@
 </template>
 
 <script>
+	const mobsms = uni.requireNativePlugin('HY-MobSms');
 	export default {
 		data() {
 			return {
@@ -42,23 +43,41 @@
 					codeTime: 60
 				},
 				timerId: null,
-				code: {
-					uuid: '',
-					img: ''
-				},
+				code: '',
+				phone:'',
+				pwd:'',
+				phoneReg: /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/,
 			};
 		},
 		methods: {
 			getsmscode: function() {
+				if (!this.phoneReg.test(this.phone)) {
+					uni.showToast({
+					  title: "手机号不正确",
+					  icon: "none"
+					})
+					return false;
+				}
 				if (this.smsbtn.status == true ) {
 					console.log('message：', "别着急！短信已经发送了~");
 					return false;
 				}
-				this.$minApi.vcode( ).then(res => {
-					this.code = res;
-					this.smsbtn.status = true; // 这段代码其实应该加在你request请求 短信发送成功后 
-					console.log(res);
-					this.timerId = setInterval(() => {
+				mobsms.sendSms({country:'86',phone:this.phone},result=>{
+				    if(result.code==1){
+				        uni.showToast({
+				          title: "发送成功",
+				          icon: "success"
+				        })
+				    }else{
+				        uni.showToast({
+				          title: "发送失败",
+				          icon: "none"
+				        })
+						}
+					})
+				
+				this.smsbtn.status = true; // 这段代码其实应该加在你request请求 短信发送成功后
+				this.timerId = setInterval(() => {
 							var codeTime = this.smsbtn.codeTime;
 							codeTime--;
 							this.smsbtn.codeTime = codeTime;
@@ -71,13 +90,27 @@
 							}
 						},
 						1000);
-					
-				}).catch(err => {
-					console.log(err)
+				return false;
+			},
+			register: function () {
+				mobsms.verify({country:'86',phone:this.phone,code:this.code},result=>{
+				    console.log(JSON.stringify(result))
+				    if(result.code==1){
+				        //register 
+						this.$minApi.login(JSON.stringify(this.login)).then(res=>{
+							
+							}).catch(err =>{
+								this.login.loading = false;
+						})
+				    }else{
+				        uni.showToast({
+				          title: "短信验证码验证失败",
+				          icon: "none"
+				        })
+				    //const status= result.status
+				    }
 				})
 				
-
-				return false;
 			}
 
 		}
@@ -159,14 +192,14 @@
 		height: 88rpx;
 		width: 100%;
 		line-height: 88rpx;
-		color: #ffffff;
+		color: #2A62FF;
 		font-size: 32rpx;
 		border-radius: 44rpx;
 		outline: 0;
 		display: block;
 		margin: 0;
 		font-family: inherit;
-		background: #f35;
+		background: #E2E4EA;
 		opacity: 0.8;
 	}
 

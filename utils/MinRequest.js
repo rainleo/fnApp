@@ -7,7 +7,7 @@ class MinRequest {
   [config] = {
     baseURL: '',
     header: {
-      'content-type': 'application/json'
+      'content-type': 'application/json',
     },
     method: 'GET',
     dataType: 'json',

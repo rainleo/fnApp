@@ -2,7 +2,7 @@
 	<view class="s-page-wrapper is-100vh">
 		<view class="is-33vh has-mgt-10">
 			<view class="is-flex is-column is-justify-center  is-align-center is-height-100">
-				<image src="../../static/img/common/logo.jpg" mode="aspectFit" class="logoimg"></image>
+				<image src="../../static/img/common/logo.png" mode="aspectFit" class="logoimg"></image>
 			</view>
 		</view>
 		<view class="content">
@@ -23,7 +23,14 @@
 			<!-- <navigator url="../register/register" class=" has-radius is-right is-grey has-mgr-20" hover-class="">
 				<text>没有账号？</text><text class="is-blue">点击注册</text>
 			</navigator> -->
-			<min-a to="register" class=" has-radius is-right is-grey has-mgr-20" hover-class=""><text>没有账号？</text><text class="is-blue">点击注册</text></min-a>
+			
+			<span  class=" has-radius is-right is-grey has-mgr-20 " hover-class="">
+				<div class="uni-text-bottom ">
+					<min-a to="register" class="is-blue">点击注册</min-a>
+					<text>|</text>
+					<min-a to="modify" class="is-red">忘记密码</min-a>
+				</div>
+			</span>
 		</view>
 	</view>
 </template>
@@ -38,7 +45,7 @@
 					password:""
 				},
 				url:'',
-
+				phoneReg: /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/,
 			};
 		},
 		onLoad:function(){
@@ -50,7 +57,7 @@
 				if (value == true) {
 					console.log("value:"+value);
 					uni.switchTab({
-						url: '../todo/todo'
+						url: '../work/work'
 					});
 				} 
 			} else{
@@ -60,7 +67,18 @@
 		},
 		methods:{
 			defaultHandlerLogin:function(){
-				this.login.loading = true;
+				// uni.showToast({
+				// 	title: "loading",
+				// 	icon: "loading",
+				// 	duration: 2000
+				// })
+				if (!this.phoneReg.test(this.login.username)) {
+					uni.showToast({
+					  title: "手机号不正确",
+					  icon: "none"
+					})
+					return false;
+				}
 				console.log(JSON.stringify(this.login));
 				this.$minApi.login(JSON.stringify(this.login)).then(res=>{
 					this.$cache.set('_loginFlag', true)
@@ -93,6 +111,7 @@
 				var dataval = e.currentTarget.dataset.val;
 				this.login[dataval] = e.detail.value; 
 			}
+			
 		}
 	}
 </script>
@@ -113,14 +132,14 @@
 		height: 88rpx;
 		width: 100%;
 		line-height: 88rpx;
-		color: #ffffff;
+		color: #2A62FF;
 		font-size: 32rpx;
 		border-radius: 44rpx;
 		outline: 0;
 		display: block;
 		margin: 0;
 		font-family: inherit;
-		background: #f35;
+		background: #E2E4EA;
 		opacity: 0.8;
 	}
 
@@ -153,5 +172,19 @@
 		font-family: inherit;
 		background: #fff;
 		resize: none;
+	}
+	.uni-text-bottom {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+	}
+	.uni-text-bottom  text{
+		display: flex;
+		flex-direction: row;
+		font-size: 24upx;
+		margin-left: 15upx;
+		margin-right: 15upx;
 	}
 </style>
