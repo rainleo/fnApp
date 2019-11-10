@@ -1,5 +1,6 @@
-(global["webpackJsonp"] = global["webpackJsonp"] || []).push([["common/vendor"],[
-/* 0 */
+(global["webpackJsonp"] = global["webpackJsonp"] || []).push([["common/vendor"],{
+
+/***/ 0:
 /*!*************************************************************!*\
   !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/main.js ***!
   \*************************************************************/
@@ -18,7 +19,7 @@ var _MinRouter = _interopRequireDefault(__webpack_require__(/*! ./utils/MinRoute
 
 var _router = _interopRequireDefault(__webpack_require__(/*! ./utils/router */ 14));
 
-var _MinCache = _interopRequireDefault(__webpack_require__(/*! ./utils/MinCache */ 13));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var mina = function mina() {return __webpack_require__.e(/*! import() | components/min-a */ "components/min-a").then(__webpack_require__.bind(null, /*! ./components/min-a.vue */ 70));};
+var _MinCache = _interopRequireDefault(__webpack_require__(/*! ./utils/MinCache */ 13));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var mina = function mina() {return __webpack_require__.e(/*! import() | components/min-a */ "components/min-a").then(__webpack_require__.bind(null, /*! ./components/min-a.vue */ 102));};
 
 _vue.default.config.productionTip = false;
 
@@ -42,7 +43,8 @@ createApp(app).$mount();
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createApp"]))
 
 /***/ }),
-/* 1 */
+
+/***/ 1:
 /*!************************************************************!*\
   !*** ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js ***!
   \************************************************************/
@@ -1517,7 +1519,811 @@ var uni$1 = uni;var _default =
 uni$1;exports.default = _default;
 
 /***/ }),
-/* 2 */
+
+/***/ 10:
+/*!********************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/runtime/componentNormalizer.js ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+function normalizeComponent (
+  scriptExports,
+  render,
+  staticRenderFns,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier, /* server only */
+  shadowMode /* vue-cli only */
+) {
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (render) {
+    options.render = render
+    options.staticRenderFns = staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = 'data-v-' + scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = shadowMode
+      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
+      : injectStyles
+  }
+
+  if (hook) {
+    if (options.functional) {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      var originalRender = options.render
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return originalRender(h, context)
+      }
+    } else {
+      // inject component registration as beforeCreate hook
+      var existing = options.beforeCreate
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    }
+  }
+
+  return {
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+
+/***/ 101:
+/*!***************************************************************************!*\
+  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/utils/graceChecker.js ***!
+  \***************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+ /**
+              数据验证（表单验证）
+              来自 grace.hcoder.net 
+              作者 hcoder 深海
+              */
+module.exports = {
+  error: '',
+  check: function check(data, rule) {
+    for (var i = 0; i < rule.length; i++) {
+      if (!rule[i].checkType) {return true;}
+      if (!rule[i].name) {return true;}
+      if (!rule[i].errorMsg) {return true;}
+      if (!data[rule[i].name]) {this.error = rule[i].errorMsg;return false;}
+      switch (rule[i].checkType) {
+        case 'string':
+          var reg = new RegExp('^.{' + rule[i].checkRule + '}$');
+          if (!reg.test(data[rule[i].name])) {this.error = rule[i].errorMsg;return false;}
+          break;
+        case 'int':
+          var reg = new RegExp('^(-[1-9]|[1-9])[0-9]{' + rule[i].checkRule + '}$');
+          if (!reg.test(data[rule[i].name])) {this.error = rule[i].errorMsg;return false;}
+          break;
+          break;
+        case 'between':
+          if (!this.isNumber(data[rule[i].name])) {
+            this.error = rule[i].errorMsg;
+            return false;
+          }
+          var minMax = rule[i].checkRule.split(',');
+          minMax[0] = Number(minMax[0]);
+          minMax[1] = Number(minMax[1]);
+          if (data[rule[i].name] > minMax[1] || data[rule[i].name] < minMax[0]) {
+            this.error = rule[i].errorMsg;
+            return false;
+          }
+          break;
+        case 'betweenD':
+          var reg = /^-?[1-9][0-9]?$/;
+          if (!reg.test(data[rule[i].name])) {this.error = rule[i].errorMsg;return false;}
+          var minMax = rule[i].checkRule.split(',');
+          minMax[0] = Number(minMax[0]);
+          minMax[1] = Number(minMax[1]);
+          if (data[rule[i].name] > minMax[1] || data[rule[i].name] < minMax[0]) {
+            this.error = rule[i].errorMsg;
+            return false;
+          }
+          break;
+        case 'betweenF':
+          var reg = /^-?[0-9][0-9]?.+[0-9]+$/;
+          if (!reg.test(data[rule[i].name])) {this.error = rule[i].errorMsg;return false;}
+          var minMax = rule[i].checkRule.split(',');
+          minMax[0] = Number(minMax[0]);
+          minMax[1] = Number(minMax[1]);
+          if (data[rule[i].name] > minMax[1] || data[rule[i].name] < minMax[0]) {
+            this.error = rule[i].errorMsg;
+            return false;
+          }
+          break;
+        case 'same':
+          if (data[rule[i].name] != rule[i].checkRule) {this.error = rule[i].errorMsg;return false;}
+          break;
+        case 'notsame':
+          if (data[rule[i].name] == rule[i].checkRule) {this.error = rule[i].errorMsg;return false;}
+          break;
+        case 'email':
+          var reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+          if (!reg.test(data[rule[i].name])) {this.error = rule[i].errorMsg;return false;}
+          break;
+        case 'phoneno':
+          var reg = /^1[0-9]{10,10}$/;
+          if (!reg.test(data[rule[i].name])) {this.error = rule[i].errorMsg;return false;}
+          break;
+        case 'zipcode':
+          var reg = /^[0-9]{6}$/;
+          if (!reg.test(data[rule[i].name])) {this.error = rule[i].errorMsg;return false;}
+          break;
+        case 'reg':
+          var reg = new RegExp(rule[i].checkRule);
+          if (!reg.test(data[rule[i].name])) {this.error = rule[i].errorMsg;return false;}
+          break;
+        case 'in':
+          if (rule[i].checkRule.indexOf(data[rule[i].name]) == -1) {
+            this.error = rule[i].errorMsg;return false;
+          }
+          break;
+        case 'notnull':
+          if (data[rule[i].name] == null || data[rule[i].name].length < 1) {this.error = rule[i].errorMsg;return false;}
+          break;}
+
+    }
+    return true;
+  },
+  isNumber: function isNumber(checkVal) {
+    var reg = /^-?[1-9][0-9]?.?[0-9]*$/;
+    return reg.test(checkVal);
+  } };
+
+/***/ }),
+
+/***/ 11:
+/*!*************************************************************************!*\
+  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/utils/MinRequest.js ***!
+  \*************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var config = Symbol('config');
+var isCompleteURL = Symbol('isCompleteURL');
+var requestBefore = Symbol('requestBefore');
+var requestAfter = Symbol('requestAfter');var
+
+MinRequest = /*#__PURE__*/function () {function MinRequest() {_classCallCheck(this, MinRequest);_defineProperty(this,
+    config, {
+      baseURL: '',
+      header: {
+        'content-type': 'application/json' },
+
+      method: 'GET',
+      dataType: 'json',
+      responseType: 'text' });_defineProperty(this, "interceptors",
+
+
+    {
+      request: function request(func) {
+        if (func) {
+          MinRequest[requestBefore] = func;
+        } else {
+          MinRequest[requestBefore] = function (request) {return request;};
+        }
+
+      },
+      response: function response(func) {
+        if (func) {
+          MinRequest[requestAfter] = func;
+        } else {
+          MinRequest[requestAfter] = function (response) {return response;};
+        }
+      } });}_createClass(MinRequest, [{ key: "setConfig", value: function setConfig(
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    func) {
+      this[config] = func(this[config]);
+    } }, { key: "request", value: function request()
+
+    {var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      options.baseURL = options.baseURL || this[config].baseURL;
+      options.dataType = options.dataType || this[config].dataType;
+      options.url = MinRequest[isCompleteURL](options.url) ? options.url : options.baseURL + options.url;
+      options.data = options.data;
+      options.header = _objectSpread({}, options.header, this[config].header);
+
+      options.method = options.method || this[config].method;
+
+      options = _objectSpread({}, options, MinRequest[requestBefore](options));
+
+      return new Promise(function (resolve, reject) {
+        options.success = function (res) {
+          resolve(MinRequest[requestAfter](res));
+        };
+        options.fail = function (err) {
+          reject(MinRequest[requestAfter](err));
+        };
+        uni.request(options);
+      });
+    } }, { key: "get", value: function get(
+
+    url, data) {var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+      options.url = url;
+      options.data = data;
+      options.method = 'GET';
+      return this.request(options);
+    } }, { key: "post", value: function post(
+
+    url, data) {var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+      options.url = url;
+      options.data = data;
+      options.method = 'POST';
+      return this.request(options);
+    } }], [{ key: requestBefore, value: function value(config) {return config;} }, { key: requestAfter, value: function value(response) {return response;} }, { key: isCompleteURL, value: function value(url) {return /(http|https):\/\/([\w.]+\/?)\S*/.test(url);} }]);return MinRequest;}();
+
+
+MinRequest.install = function (Vue) {
+  Vue.mixin({
+    beforeCreate: function beforeCreate() {
+      if (this.$options.minRequest) {
+        console.log(this.$options.minRequest);
+        Vue._minRequest = this.$options.minRequest;
+      }
+    } });
+
+  Object.defineProperty(Vue.prototype, '$minApi', {
+    get: function get() {
+      return Vue._minRequest.apis;
+    } });
+
+};var _default =
+
+MinRequest;exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 12:
+/*!******************************************************************!*\
+  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/utils/api.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _MinRequest = _interopRequireDefault(__webpack_require__(/*! ./MinRequest */ 11));
+var _MinCache = _interopRequireDefault(__webpack_require__(/*! ./MinCache */ 13));
+var _router = _interopRequireDefault(__webpack_require__(/*! ./router */ 14));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
+var minRequest = new _MinRequest.default();
+var cache = new _MinCache.default();
+// 请求拦截器
+minRequest.interceptors.request(function (request) {
+  console.log("添加token");
+  var value = cache.get('_loginFlag');
+  if (value) {
+    if (value == true) {
+      request.header = _objectSpread({}, request.header, { 'Authorization': 'Bearer ' + cache.get('_token') });
+    }
+  }
+
+  return request;
+});
+
+// 响应拦截器
+minRequest.interceptors.response(function (response) {
+  console.log(response);
+  if (response.statusCode === 200) {
+    return response.data;
+  } else {
+    uni.showModal({
+      content: response.data.message,
+      confirmText: "确定",
+      showCancel: false,
+      complete: function complete() {
+        console.log(response.data.message);
+        if (response.data.status === 401) {
+          console.log(401);
+          var pages = getCurrentPages();
+          var currPage = pages[pages.length - 1]; //当前页面
+          //var prevPage = pages[pages.length - 2]; //上一个页面
+          console.log(currPage.route);
+          cache.set('url', currPage.route);
+          uni.navigateTo({
+            url: '/pages/login/login' });
+
+          cache.set('_loginFlag', false);
+          cache.delete('_token');
+        }
+      } });
+
+    // uni.showToast({
+    //     title: response.data.message,
+    //     duration: 2000,
+    // 	complete: () => {}
+    // });
+
+
+
+
+  }
+
+
+});
+
+// 设置默认配置
+minRequest.setConfig(function (config) {
+  config.baseURL = 'http://localhost:8000';
+  return config;
+});var _default =
+
+
+{
+  apis: {
+    vcode: function vcode() {
+      return minRequest.get('/auth/vCode');
+    },
+    myinfo: function myinfo() {
+      return minRequest.get('/auth/info');
+    },
+    login: function login(data) {
+      return minRequest.post('/auth/applogin', data);
+    } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 13:
+/*!***********************************************************************!*\
+  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/utils/MinCache.js ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}var cacheMap = new Map();
+var timeoutDefault = 1200;
+
+function isTimeout(name) {
+  var data = cacheMap.get(name);
+  if (!data) return true;
+  if (data.timeout === 0) return false;
+  var currentTime = Date.now();
+  var overTime = (currentTime - data.createTime) / 1000;
+  if (overTime > data.timeout) {
+    cacheMap.delete(name);
+    if (name.startsWith('_')) {
+      try {
+        uni.removeStorageSync(name);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    return true;
+  }
+  return false;
+}var
+
+CacheCell =
+function CacheCell(data, timeout) {_classCallCheck(this, CacheCell);
+  this.data = data;
+  this.timeout = timeout;
+  this.createTime = Date.now();
+};var
+
+
+MinCache = /*#__PURE__*/function () {
+  function MinCache(timeout) {_classCallCheck(this, MinCache);
+    try {
+      var res = uni.getStorageInfoSync();
+      res.keys.forEach(function (name) {
+        try {
+          var value = uni.getStorageSync(name);
+          cacheMap.set(name, value);
+        } catch (e) {
+          console.log(e);
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    timeoutDefault = timeout;
+  }_createClass(MinCache, [{ key: "set", value: function set(
+    name, data) {var timeout = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : timeoutDefault;
+      var cachecell = new CacheCell(data, timeout);
+      var cache = null;
+      if (name.startsWith('_')) {
+        try {
+          uni.setStorageSync(name, cachecell);
+          cache = cacheMap.set(name, cachecell);
+        } catch (e) {
+          console.log(e);
+        }
+      } else {
+        cache = cacheMap.set(name, cachecell);
+      }
+      return cache;
+    } }, { key: "get", value: function get(
+    name) {
+      return isTimeout(name) ? null : cacheMap.get(name).data;
+    } }, { key: "delete", value: function _delete(
+    name) {
+      var value = false;
+      if (name.startsWith('_')) {
+        try {
+          uni.removeStorageSync(name);
+          value = cacheMap.delete(name);
+        } catch (e) {
+          console.log(e);
+        }
+      } else {
+        value = cacheMap.delete(name);
+      }
+      return value;
+    } }, { key: "has", value: function has(
+    name) {
+      return !isTimeout(name);
+    } }, { key: "clear", value: function clear()
+    {
+      var value = false;
+      try {
+        uni.clearStorageSync();
+        cacheMap.clear();
+        value = true;
+      } catch (e) {
+        console.log(e);
+      }
+      return value;
+    } }]);return MinCache;}();
+
+
+MinCache.install = function (Vue) {var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},_ref$timeout = _ref.timeout,timeout = _ref$timeout === void 0 ? 1200 : _ref$timeout;
+  Vue.prototype.$cache = new MinCache(timeout);
+};var _default =
+
+MinCache;exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 14:
+/*!*********************************************************************!*\
+  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/utils/router.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _MinRouter = _interopRequireDefault(__webpack_require__(/*! ./MinRouter */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+// 配置路由
+var router = new _MinRouter.default({
+  routes: [
+  {
+    // 页面路径
+    path: 'pages/index/index',
+    // type必须是以下的值['navigateTo', 'switchTab', 'reLaunch', 'redirectTo']
+    // 跳转方式(默认跳转方式)
+    type: 'navigateTo',
+    name: 'index' },
+
+  {
+    path: 'pages/register/register',
+    name: 'register' },
+
+  {
+    path: 'pages/todo/todo',
+    type: 'switchTab',
+    name: 'todo' },
+
+  {
+    path: 'pages/login/login',
+    type: 'navigateTo',
+    name: 'login' },
+
+  {
+    path: 'pages/modify/modify',
+    type: 'navigateTo',
+    name: 'modify' },
+
+  {
+    path: 'pages/my/info/info',
+    type: 'navigateTo',
+    name: 'info' },
+
+  {
+    path: 'pages/work/work',
+    type: 'switchTab',
+    name: 'work' },
+
+  {
+    path: 'pages/todo/approve/approve',
+    type: 'navigateTo',
+    name: 'approve' },
+
+  {
+    path: 'pages/work/addwork/addwork',
+    type: 'navigateTo',
+    name: 'addwork' },
+
+  {
+    path: 'pages/todo/financial/financial',
+    type: 'navigateTo',
+    name: 'financial' }] });
+
+
+
+
+
+
+
+router.beforeEach(function (to, from, next) {
+  if (from === 'pages/index/index' && to === 'pages/my/index') {
+    // 不希望跳转就传false
+    next(false);
+    // 跳到指定页面
+    // next('pages/test/index')
+  }
+});var _default =
+
+
+router;exports.default = _default;
+
+/***/ }),
+
+/***/ 15:
+/*!************************************************************************!*\
+  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/utils/MinRouter.js ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var toString = Object.prototype.toString;
+var before;
+
+function isObject(value) {
+  return toString.call(value) === '[object Object]';
+}
+
+function isString(value) {
+  return toString.call(value) === '[object String]';
+}
+
+function isDefault(value) {
+  return value === void 0;
+}
+
+function openPage(args) {
+  var name,query = {},queryStr = null,path,type,isName = false;
+
+  switch (true) {
+    case isObject(args):
+      name = args.name;var _args$query = args.query;query = _args$query === void 0 ? {} : _args$query;
+      break;
+    case isString(args):
+      name = args;
+      break;
+    default:
+      throw new Error('参数必须是对象或者字符串');}
+
+
+  if (isObject(query)) {
+    queryStr = encodeURIComponent(JSON.stringify(query));
+  } else {
+    throw new Error('query数据必须是Object');
+  }
+  this.$minRouter.forEach(function (item) {
+    if (item.name === name) {
+      path = item.path;
+      type = item.type || 'navigateTo';
+      isName = true;
+    }
+  });
+
+  if (!isName) {
+    throw new Error("\u6CA1\u6709".concat(name, "\u9875\u9762"));
+  }
+
+  if (!['navigateTo', 'switchTab', 'reLaunch', 'redirectTo'].includes(type)) {
+    throw new Error("name:".concat(name, "\u91CC\u9762\u7684type\u5FC5\u987B\u662F\u4EE5\u4E0B\u7684\u503C['navigateTo', 'switchTab', 'reLaunch', 'redirectTo']"));
+  }
+
+  return new Promise(function (resolve, reject) {
+    var routers = getCurrentPages();
+    var route = null;
+    if (routers.length !== 0) {
+      var router = routers[routers.length - 1];
+      route = router.route;
+    }
+    var flag = true;
+    function next(name) {
+      switch (true) {
+        case name === undefined:
+          break;
+        case name === false:
+          flag = false;
+          break;
+        case isString(name):
+          flag = false;
+          uni[type]({
+            url: "/".concat(name),
+            success: resolve,
+            fail: reject });
+
+          break;}
+
+    }
+    before(path, route, next);
+    if (flag) {
+      uni[type]({
+        url: "/".concat(path, "?query=").concat(queryStr),
+        success: resolve,
+        fail: reject });
+
+    }
+  });
+}
+
+
+function beforeEach(callback) {
+  before = callback;
+}
+
+function parseURL() {
+  var query = this.$root.$mp.query.query;
+  if (query) {
+    return JSON.parse(decodeURIComponent(query));
+  } else {
+    return {};
+  }
+}
+
+function install(Vue) {
+  Vue.mixin({
+    beforeCreate: function beforeCreate() {
+      if (!isDefault(this.$options.minRouter)) {
+        Vue._minRouter = this.$options.minRouter;
+      }
+    } });
+
+  Object.defineProperty(Vue.prototype, '$minRouter', {
+    get: function get() {
+      return Vue._minRouter._router;
+    } });
+
+  Object.defineProperty(Vue.prototype, '$parseURL', {
+    get: function get() {
+      return Vue._minRouter.parseURL;
+    } });
+
+  Object.defineProperty(Vue.prototype, '$openPage', {
+    get: function get() {
+      return Vue._minRouter.openPage;
+    } });
+
+}
+
+function MinRouter(options) {
+  if (!(this instanceof MinRouter)) {
+    throw Error("MinRouter是一个构造函数，应该用`new`关键字调用");
+  }
+  isDefault(options) && (options = {});
+  this.options = options;
+  this._router = options.routes || [];
+}
+
+MinRouter.install = install;
+MinRouter.prototype.openPage = openPage;
+MinRouter.prototype.parseURL = parseURL;
+MinRouter.prototype.beforeEach = beforeEach;var _default =
+
+MinRouter;exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 16:
+/*!**********************************************************************************************!*\
+  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/main.js?{"page":"pages%2Findex%2Findex"} ***!
+  \**********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _index = _interopRequireDefault(__webpack_require__(/*! ./pages/index/index.vue */ 17));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_index.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
+/***/ 192:
+/*!*********************************************************************************************************!*\
+  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/main.js?{"page":"pages%2Ftodo%2Fapprove%2Fapprove"} ***!
+  \*********************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _approve = _interopRequireDefault(__webpack_require__(/*! ./pages/todo/approve/approve.vue */ 193));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_approve.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
+/***/ 2:
 /*!******************************************************************************************!*\
   !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js ***!
   \******************************************************************************************/
@@ -7465,7 +8271,42 @@ internalMixin(Vue);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../webpack/buildin/global.js */ 3)))
 
 /***/ }),
-/* 3 */
+
+/***/ 209:
+/*!*************************************************************************************************************!*\
+  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/main.js?{"page":"pages%2Ftodo%2Ffinancial%2Ffinancial"} ***!
+  \*************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _financial = _interopRequireDefault(__webpack_require__(/*! ./pages/todo/financial/financial.vue */ 210));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_financial.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
+/***/ 22:
+/*!**********************************************************************************************!*\
+  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/main.js?{"page":"pages%2Flogin%2Flogin"} ***!
+  \**********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _login = _interopRequireDefault(__webpack_require__(/*! ./pages/login/login.vue */ 23));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_login.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
+/***/ 3:
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
   \***********************************/
@@ -7495,689 +8336,8 @@ module.exports = g;
 
 
 /***/ }),
-/* 4 */
-/*!****************************************************************!*\
-  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/pages.json ***!
-  \****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-/***/ }),
-/* 5 */,
-/* 6 */,
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */
-/*!********************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/runtime/componentNormalizer.js ***!
-  \********************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-function normalizeComponent (
-  scriptExports,
-  render,
-  staticRenderFns,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier, /* server only */
-  shadowMode /* vue-cli only */
-) {
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (render) {
-    options.render = render
-    options.staticRenderFns = staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = 'data-v-' + scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = shadowMode
-      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
-      : injectStyles
-  }
-
-  if (hook) {
-    if (options.functional) {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      var originalRender = options.render
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return originalRender(h, context)
-      }
-    } else {
-      // inject component registration as beforeCreate hook
-      var existing = options.beforeCreate
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    }
-  }
-
-  return {
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 11 */
-/*!*************************************************************************!*\
-  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/utils/MinRequest.js ***!
-  \*************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var config = Symbol('config');
-var isCompleteURL = Symbol('isCompleteURL');
-var requestBefore = Symbol('requestBefore');
-var requestAfter = Symbol('requestAfter');var
-
-MinRequest = /*#__PURE__*/function () {function MinRequest() {_classCallCheck(this, MinRequest);_defineProperty(this,
-    config, {
-      baseURL: '',
-      header: {
-        'content-type': 'application/json' },
-
-      method: 'GET',
-      dataType: 'json',
-      responseType: 'text' });_defineProperty(this, "interceptors",
-
-
-    {
-      request: function request(func) {
-        if (func) {
-          MinRequest[requestBefore] = func;
-        } else {
-          MinRequest[requestBefore] = function (request) {return request;};
-        }
-
-      },
-      response: function response(func) {
-        if (func) {
-          MinRequest[requestAfter] = func;
-        } else {
-          MinRequest[requestAfter] = function (response) {return response;};
-        }
-      } });}_createClass(MinRequest, [{ key: "setConfig", value: function setConfig(
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    func) {
-      this[config] = func(this[config]);
-    } }, { key: "request", value: function request()
-
-    {var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      options.baseURL = options.baseURL || this[config].baseURL;
-      options.dataType = options.dataType || this[config].dataType;
-      options.url = MinRequest[isCompleteURL](options.url) ? options.url : options.baseURL + options.url;
-      options.data = options.data;
-      options.header = _objectSpread({}, options.header, this[config].header);
-
-      options.method = options.method || this[config].method;
-
-      options = _objectSpread({}, options, MinRequest[requestBefore](options));
-
-      return new Promise(function (resolve, reject) {
-        options.success = function (res) {
-          resolve(MinRequest[requestAfter](res));
-        };
-        options.fail = function (err) {
-          reject(MinRequest[requestAfter](err));
-        };
-        uni.request(options);
-      });
-    } }, { key: "get", value: function get(
-
-    url, data) {var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-      options.url = url;
-      options.data = data;
-      options.method = 'GET';
-      return this.request(options);
-    } }, { key: "post", value: function post(
-
-    url, data) {var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-      options.url = url;
-      options.data = data;
-      options.method = 'POST';
-      return this.request(options);
-    } }], [{ key: requestBefore, value: function value(config) {return config;} }, { key: requestAfter, value: function value(response) {return response;} }, { key: isCompleteURL, value: function value(url) {return /(http|https):\/\/([\w.]+\/?)\S*/.test(url);} }]);return MinRequest;}();
-
-
-MinRequest.install = function (Vue) {
-  Vue.mixin({
-    beforeCreate: function beforeCreate() {
-      if (this.$options.minRequest) {
-        console.log(this.$options.minRequest);
-        Vue._minRequest = this.$options.minRequest;
-      }
-    } });
-
-  Object.defineProperty(Vue.prototype, '$minApi', {
-    get: function get() {
-      return Vue._minRequest.apis;
-    } });
-
-};var _default =
-
-MinRequest;exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-/* 12 */
-/*!******************************************************************!*\
-  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/utils/api.js ***!
-  \******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _MinRequest = _interopRequireDefault(__webpack_require__(/*! ./MinRequest */ 11));
-var _MinCache = _interopRequireDefault(__webpack_require__(/*! ./MinCache */ 13));
-var _router = _interopRequireDefault(__webpack_require__(/*! ./router */ 14));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
-var minRequest = new _MinRequest.default();
-var cache = new _MinCache.default();
-// 请求拦截器
-minRequest.interceptors.request(function (request) {
-  console.log("添加token");
-  var value = cache.get('_loginFlag');
-  if (value) {
-    if (value == true) {
-      request.header = _objectSpread({}, request.header, { 'Authorization': 'Bearer ' + cache.get('_token') });
-    }
-  }
-
-  return request;
-});
-
-// 响应拦截器
-minRequest.interceptors.response(function (response) {
-  console.log(response);
-  if (response.statusCode === 200) {
-    return response.data;
-  } else {
-    console.log("");
-    uni.showToast({
-      title: response.data.message,
-      duration: 2000 });
-
-    uni.hideToast();
-    if (response.data.status === 401) {
-      console.log(401);
-      // uni.navigateTo({
-      // 	url: '/pages/login/login',
-      // });
-      var pages = getCurrentPages();
-      var currPage = pages[pages.length - 1]; //当前页面
-      //var prevPage = pages[pages.length - 2]; //上一个页面
-      console.log(currPage.route);
-      //console.log(prevPage.route);
-      console.log('22222');
-      cache.set('url', currPage.route);
-      // MinRequest.open({
-      // 		name: 'login',
-      // 		query: {url: currPage.route}
-      // 	})
-      uni.navigateTo({
-        url: '/pages/login/login' });
-
-      cache.set('_loginFlag', false);
-      cache.delete('_token');
-    }
-
-  }
-
-
-});
-
-// 设置默认配置
-minRequest.setConfig(function (config) {
-  config.baseURL = 'http://localhost:8000';
-  return config;
-});var _default =
-
-
-{
-  apis: {
-    vcode: function vcode() {
-      return minRequest.get('/auth/vCode');
-    },
-    myinfo: function myinfo() {
-      return minRequest.get('/auth/info');
-    },
-    login: function login(data) {
-      return minRequest.post('/auth/applogin', data);
-    } } };exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-/* 13 */
-/*!***********************************************************************!*\
-  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/utils/MinCache.js ***!
-  \***********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}var cacheMap = new Map();
-var timeoutDefault = 1200;
-
-function isTimeout(name) {
-  var data = cacheMap.get(name);
-  if (!data) return true;
-  if (data.timeout === 0) return false;
-  var currentTime = Date.now();
-  var overTime = (currentTime - data.createTime) / 1000;
-  if (overTime > data.timeout) {
-    cacheMap.delete(name);
-    if (name.startsWith('_')) {
-      try {
-        uni.removeStorageSync(name);
-      } catch (e) {
-        console.log(e);
-      }
-    }
-    return true;
-  }
-  return false;
-}var
-
-CacheCell =
-function CacheCell(data, timeout) {_classCallCheck(this, CacheCell);
-  this.data = data;
-  this.timeout = timeout;
-  this.createTime = Date.now();
-};var
-
-
-MinCache = /*#__PURE__*/function () {
-  function MinCache(timeout) {_classCallCheck(this, MinCache);
-    try {
-      var res = uni.getStorageInfoSync();
-      res.keys.forEach(function (name) {
-        try {
-          var value = uni.getStorageSync(name);
-          cacheMap.set(name, value);
-        } catch (e) {
-          console.log(e);
-        }
-      });
-    } catch (e) {
-      console.log(e);
-    }
-    timeoutDefault = timeout;
-  }_createClass(MinCache, [{ key: "set", value: function set(
-    name, data) {var timeout = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : timeoutDefault;
-      var cachecell = new CacheCell(data, timeout);
-      var cache = null;
-      if (name.startsWith('_')) {
-        try {
-          uni.setStorageSync(name, cachecell);
-          cache = cacheMap.set(name, cachecell);
-        } catch (e) {
-          console.log(e);
-        }
-      } else {
-        cache = cacheMap.set(name, cachecell);
-      }
-      return cache;
-    } }, { key: "get", value: function get(
-    name) {
-      return isTimeout(name) ? null : cacheMap.get(name).data;
-    } }, { key: "delete", value: function _delete(
-    name) {
-      var value = false;
-      if (name.startsWith('_')) {
-        try {
-          uni.removeStorageSync(name);
-          value = cacheMap.delete(name);
-        } catch (e) {
-          console.log(e);
-        }
-      } else {
-        value = cacheMap.delete(name);
-      }
-      return value;
-    } }, { key: "has", value: function has(
-    name) {
-      return !isTimeout(name);
-    } }, { key: "clear", value: function clear()
-    {
-      var value = false;
-      try {
-        uni.clearStorageSync();
-        cacheMap.clear();
-        value = true;
-      } catch (e) {
-        console.log(e);
-      }
-      return value;
-    } }]);return MinCache;}();
-
-
-MinCache.install = function (Vue) {var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},_ref$timeout = _ref.timeout,timeout = _ref$timeout === void 0 ? 1200 : _ref$timeout;
-  Vue.prototype.$cache = new MinCache(timeout);
-};var _default =
-
-MinCache;exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-/* 14 */
-/*!*********************************************************************!*\
-  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/utils/router.js ***!
-  \*********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _MinRouter = _interopRequireDefault(__webpack_require__(/*! ./MinRouter */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-// 配置路由
-var router = new _MinRouter.default({
-  routes: [
-  {
-    // 页面路径
-    path: 'pages/index/index',
-    // type必须是以下的值['navigateTo', 'switchTab', 'reLaunch', 'redirectTo']
-    // 跳转方式(默认跳转方式)
-    type: 'navigateTo',
-    name: 'index' },
-
-  {
-    path: 'pages/register/register',
-    name: 'register' },
-
-  {
-    path: 'pages/todo/todo',
-    type: 'switchTab',
-    name: 'todo' },
-
-  {
-    path: 'pages/login/login',
-    type: 'navigateTo',
-    name: 'login' }] });
-
-
-
-
-router.beforeEach(function (to, from, next) {
-  if (from === 'pages/index/index' && to === 'pages/my/index') {
-    // 不希望跳转就传false
-    next(false);
-    // 跳到指定页面
-    // next('pages/test/index')
-  }
-});var _default =
-
-
-router;exports.default = _default;
-
-/***/ }),
-/* 15 */
-/*!************************************************************************!*\
-  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/utils/MinRouter.js ***!
-  \************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var toString = Object.prototype.toString;
-var before;
-
-function isObject(value) {
-  return toString.call(value) === '[object Object]';
-}
-
-function isString(value) {
-  return toString.call(value) === '[object String]';
-}
-
-function isDefault(value) {
-  return value === void 0;
-}
-
-function openPage(args) {
-  var name,query = {},queryStr = null,path,type,isName = false;
-
-  switch (true) {
-    case isObject(args):
-      name = args.name;var _args$query = args.query;query = _args$query === void 0 ? {} : _args$query;
-      break;
-    case isString(args):
-      name = args;
-      break;
-    default:
-      throw new Error('参数必须是对象或者字符串');}
-
-
-  if (isObject(query)) {
-    queryStr = encodeURIComponent(JSON.stringify(query));
-  } else {
-    throw new Error('query数据必须是Object');
-  }
-  this.$minRouter.forEach(function (item) {
-    if (item.name === name) {
-      path = item.path;
-      type = item.type || 'navigateTo';
-      isName = true;
-    }
-  });
-
-  if (!isName) {
-    throw new Error("\u6CA1\u6709".concat(name, "\u9875\u9762"));
-  }
-
-  if (!['navigateTo', 'switchTab', 'reLaunch', 'redirectTo'].includes(type)) {
-    throw new Error("name:".concat(name, "\u91CC\u9762\u7684type\u5FC5\u987B\u662F\u4EE5\u4E0B\u7684\u503C['navigateTo', 'switchTab', 'reLaunch', 'redirectTo']"));
-  }
-
-  return new Promise(function (resolve, reject) {
-    var routers = getCurrentPages();
-    var route = null;
-    if (routers.length !== 0) {
-      var router = routers[routers.length - 1];
-      route = router.route;
-    }
-    var flag = true;
-    function next(name) {
-      switch (true) {
-        case name === undefined:
-          break;
-        case name === false:
-          flag = false;
-          break;
-        case isString(name):
-          flag = false;
-          uni[type]({
-            url: "/".concat(name),
-            success: resolve,
-            fail: reject });
-
-          break;}
-
-    }
-    before(path, route, next);
-    if (flag) {
-      uni[type]({
-        url: "/".concat(path, "?query=").concat(queryStr),
-        success: resolve,
-        fail: reject });
-
-    }
-  });
-}
-
-
-function beforeEach(callback) {
-  before = callback;
-}
-
-function parseURL() {
-  var query = this.$root.$mp.query.query;
-  if (query) {
-    return JSON.parse(decodeURIComponent(query));
-  } else {
-    return {};
-  }
-}
-
-function install(Vue) {
-  Vue.mixin({
-    beforeCreate: function beforeCreate() {
-      if (!isDefault(this.$options.minRouter)) {
-        Vue._minRouter = this.$options.minRouter;
-      }
-    } });
-
-  Object.defineProperty(Vue.prototype, '$minRouter', {
-    get: function get() {
-      return Vue._minRouter._router;
-    } });
-
-  Object.defineProperty(Vue.prototype, '$parseURL', {
-    get: function get() {
-      return Vue._minRouter.parseURL;
-    } });
-
-  Object.defineProperty(Vue.prototype, '$openPage', {
-    get: function get() {
-      return Vue._minRouter.openPage;
-    } });
-
-}
-
-function MinRouter(options) {
-  if (!(this instanceof MinRouter)) {
-    throw Error("MinRouter是一个构造函数，应该用`new`关键字调用");
-  }
-  isDefault(options) && (options = {});
-  this.options = options;
-  this._router = options.routes || [];
-}
-
-MinRouter.install = install;
-MinRouter.prototype.openPage = openPage;
-MinRouter.prototype.parseURL = parseURL;
-MinRouter.prototype.beforeEach = beforeEach;var _default =
-
-MinRouter;exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-/* 16 */
-/*!**********************************************************************************************!*\
-  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/main.js?{"page":"pages%2Findex%2Findex"} ***!
-  \**********************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
-
-var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _index = _interopRequireDefault(__webpack_require__(/*! ./pages/index/index.vue */ 17));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-createPage(_index.default);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
-
-/***/ }),
-/* 17 */,
-/* 18 */,
-/* 19 */,
-/* 20 */,
-/* 21 */,
-/* 22 */
-/*!**********************************************************************************************!*\
-  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/main.js?{"page":"pages%2Flogin%2Flogin"} ***!
-  \**********************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
-
-var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _login = _interopRequireDefault(__webpack_require__(/*! ./pages/login/login.vue */ 23));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-createPage(_login.default);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
-
-/***/ }),
-/* 23 */,
-/* 24 */,
-/* 25 */,
-/* 26 */,
-/* 27 */,
-/* 28 */,
-/* 29 */,
-/* 30 */
+/***/ 30:
 /*!**********************************************************************************************!*\
   !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/main.js?{"page":"pages%2Findex%2Fguide"} ***!
   \**********************************************************************************************/
@@ -8193,14 +8353,8 @@ createPage(_guide.default);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
 
 /***/ }),
-/* 31 */,
-/* 32 */,
-/* 33 */,
-/* 34 */,
-/* 35 */,
-/* 36 */,
-/* 37 */,
-/* 38 */
+
+/***/ 38:
 /*!****************************************************************************************************!*\
   !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/main.js?{"page":"pages%2Fregister%2Fregister"} ***!
   \****************************************************************************************************/
@@ -8216,14 +8370,20 @@ createPage(_register.default);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
 
 /***/ }),
-/* 39 */,
-/* 40 */,
-/* 41 */,
-/* 42 */,
-/* 43 */,
-/* 44 */,
-/* 45 */,
-/* 46 */
+
+/***/ 4:
+/*!****************************************************************!*\
+  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/pages.json ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/***/ }),
+
+/***/ 46:
 /*!********************************************************************************************!*\
   !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/main.js?{"page":"pages%2Fwork%2Fwork"} ***!
   \********************************************************************************************/
@@ -8239,12 +8399,8 @@ createPage(_work.default);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
 
 /***/ }),
-/* 47 */,
-/* 48 */,
-/* 49 */,
-/* 50 */,
-/* 51 */,
-/* 52 */
+
+/***/ 56:
 /*!********************************************************************************************!*\
   !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/main.js?{"page":"pages%2Ftodo%2Ftodo"} ***!
   \********************************************************************************************/
@@ -8255,17 +8411,45 @@ createPage(_work.default);
 /* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
 
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _todo = _interopRequireDefault(__webpack_require__(/*! ./pages/todo/todo.vue */ 53));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _todo = _interopRequireDefault(__webpack_require__(/*! ./pages/todo/todo.vue */ 57));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 createPage(_todo.default);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
 
 /***/ }),
-/* 53 */,
-/* 54 */,
-/* 55 */,
-/* 56 */,
-/* 57 */,
-/* 58 */
+
+/***/ 62:
+/*!*******************************************************************!*\
+  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/utils/util.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+function throttle(fn, gapTime) {
+  if (gapTime == null || gapTime == undefined) {
+    gapTime = 1500;
+  }
+
+  var _lastTime = null;
+
+  // 返回新的函数
+  return function () {
+    var _nowTime = +new Date();
+    if (_nowTime - _lastTime > gapTime || !_lastTime) {
+      fn.apply(this, arguments); //将this和参数传给原函数
+      _lastTime = _nowTime;
+    }
+  };
+}
+
+module.exports = {
+  throttle: throttle,
+  vuemixin: {
+    created: function created() {console.log(1);} } };
+
+/***/ }),
+
+/***/ 65:
 /*!****************************************************************************************!*\
   !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/main.js?{"page":"pages%2Fmy%2Fmy"} ***!
   \****************************************************************************************/
@@ -8276,17 +8460,13 @@ createPage(_todo.default);
 /* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
 
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _my = _interopRequireDefault(__webpack_require__(/*! ./pages/my/my.vue */ 59));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _my = _interopRequireDefault(__webpack_require__(/*! ./pages/my/my.vue */ 66));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 createPage(_my.default);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
 
 /***/ }),
-/* 59 */,
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */,
-/* 64 */
+
+/***/ 73:
 /*!******************************************************************************************************!*\
   !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/main.js?{"page":"pages%2Fprinciple%2Fprinciple"} ***!
   \******************************************************************************************************/
@@ -8297,10 +8477,62 @@ createPage(_my.default);
 /* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
 
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _principle = _interopRequireDefault(__webpack_require__(/*! ./pages/principle/principle.vue */ 65));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _principle = _interopRequireDefault(__webpack_require__(/*! ./pages/principle/principle.vue */ 74));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 createPage(_principle.default);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
 
+/***/ }),
+
+/***/ 79:
+/*!************************************************************************************************!*\
+  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/main.js?{"page":"pages%2Fmodify%2Fmodify"} ***!
+  \************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _modify = _interopRequireDefault(__webpack_require__(/*! ./pages/modify/modify.vue */ 80));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_modify.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
+/***/ 87:
+/*!*************************************************************************************************!*\
+  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/main.js?{"page":"pages%2Fmy%2Finfo%2Finfo"} ***!
+  \*************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _info = _interopRequireDefault(__webpack_require__(/*! ./pages/my/info/info.vue */ 88));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_info.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
+/***/ 95:
+/*!*********************************************************************************************************!*\
+  !*** /Users/liuyu/Documents/HBuilderProjects/fnApp/main.js?{"page":"pages%2Fwork%2Faddwork%2Faddwork"} ***!
+  \*********************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _addwork = _interopRequireDefault(__webpack_require__(/*! ./pages/work/addwork/addwork.vue */ 96));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_addwork.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
 /***/ })
-]]);
+
+}]);
 //# sourceMappingURL=../../.sourcemap/mp-weixin/common/vendor.js.map

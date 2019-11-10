@@ -12,14 +12,14 @@ page {
 	height: 88rpx;
 	width: 100%;
 	line-height: 88rpx;
-	color: #ffffff;
+	color: #2A62FF;
 	font-size: 32rpx;
 	border-radius: 44rpx;
 	outline: 0;
 	display: block;
 	margin: 0;
 	font-family: inherit;
-	background: #f35;
+	background: #E2E4EA;
 	opacity: 0.8;
 }
 button:after {
@@ -53,5 +53,39 @@ button:after {
 	font-family: inherit;
 	background: #fff;
 	resize: none;
+}
+.uni-text-bottom {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	    -ms-flex-direction: row;
+	        flex-direction: row;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	text-align: center;
+}
+.uni-text-bottom  text{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	    -ms-flex-direction: row;
+	        flex-direction: row;
+	font-size: 24rpx;
+	margin-left: 15rpx;
+	margin-right: 15rpx;
 }
 

@@ -7,7 +7,12 @@
     "pages/work/work",
     "pages/todo/todo",
     "pages/my/my",
-    "pages/principle/principle"
+    "pages/principle/principle",
+    "pages/modify/modify",
+    "pages/my/info/info",
+    "pages/work/addwork/addwork",
+    "pages/todo/approve/approve",
+    "pages/todo/financial/financial"
   ],
   "subPackages": [],
   "window": {
@@ -23,16 +28,16 @@
     "backgroundColor": "#F8F8F8",
     "list": [
       {
-        "pagePath": "pages/work/work",
-        "iconPath": "static/img/tabbar/work.png",
-        "selectedIconPath": "static/img/tabbar/work.png",
-        "text": "办公"
-      },
-      {
         "pagePath": "pages/todo/todo",
         "iconPath": "static/img/tabbar/todo.png",
         "selectedIconPath": "static/img/tabbar/todo.png",
         "text": "代办"
+      },
+      {
+        "pagePath": "pages/work/work",
+        "iconPath": "static/img/tabbar/work.png",
+        "selectedIconPath": "static/img/tabbar/work.png",
+        "text": "办公"
       },
       {
         "pagePath": "pages/my/my",

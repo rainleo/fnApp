@@ -135,6 +135,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 var _default =
 {
   data: function data() {
@@ -157,7 +164,7 @@ var _default =
       if (value == true) {
         console.log("value:" + value);
         uni.switchTab({
-          url: '../todo/todo' });
+          url: '../work/work' });
 
       }
     } else {
@@ -167,19 +174,19 @@ var _default =
   },
   methods: {
     defaultHandlerLogin: function defaultHandlerLogin() {var _this = this;
-      this.login.loading = true;
+      uni.showToast({
+        title: "loading",
+        icon: "loading",
+        duration: 2000 });
+
       console.log(JSON.stringify(this.login));
       this.$minApi.login(JSON.stringify(this.login)).then(function (res) {
         _this.$cache.set('_loginFlag', true);
         _this.$cache.set('_token', res.token);
         var pages = getCurrentPages();
         var currPage = pages[pages.length - 1]; //当前页面
-        //var prevPage = pages[pages.length - 2]; //上一个页面
-        console.log(currPage.route);
         _this.url = _this.$cache.get('url');
-        console.log(_this.url);
         if (_this.url != null && _this.url != currPage.route) {
-          console.log(_this.url);
           console.log("lll");
           var url = _this.$cache.get('url');
           _this.$cache.delete('url');

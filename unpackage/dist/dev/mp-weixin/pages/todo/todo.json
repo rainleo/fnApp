@@ -1,3 +1,7 @@
 {
-  "usingComponents": {}
+  "navigationBarTitleText": "代办事项",
+  "usingComponents": {
+    "refresh": "/components/refresh",
+    "nav-tab": "/components/navTab"
+  }
 }

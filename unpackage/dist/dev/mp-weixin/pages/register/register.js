@@ -139,8 +139,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 //
 //
-var _default =
-{
+
+//const mobsms = uni.requireNativePlugin('HY-MobSms');
+var _default = {
   data: function data() {
     return {
       smsbtn: {
