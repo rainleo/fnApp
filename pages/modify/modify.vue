@@ -44,7 +44,9 @@
           phone: '',
           code: '',
           passwordOne: '',
-          passwordTwo: ''
+          passwordTwo: '',
+		  oldPass:'',
+		  newPass:''
         },
         passwordReg: /^\w+$/,
         phoneReg: /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/,
@@ -85,10 +87,18 @@
 			    console.log(JSON.stringify(result))
 			    if(result.code==1){
 			        //modify
-					this.$minApi.login(JSON.stringify(this.login)).then(res=>{
-						
+					this.mobile.newPass=this.mobile.passwordTwo
+					this.$minApi.modifyPwd(JSON.stringify(this.mobile)).then(res=>{
+						 uni.showToast({
+						   title: "修改成功",
+						   icon: "none",
+						   success: () => {
+						   	uni.navigateBack({
+						   		})
+						   }
+						 })
 						}).catch(err =>{
-							this.login.loading = false;
+							console.log("errorrr modify");
 					})
 			    }else{
 			        uni.showToast({

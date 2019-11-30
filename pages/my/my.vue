@@ -13,7 +13,7 @@
 				<text class="list-text">帐号管理</text>
 				<text class="navigat-arrow">&#xe65e;</text>
 			</view>
-			<view class="center-list-item">
+			<view class="center-list-item" @click="toapprove">
 				<text class="list-icon">&#xe639;</text>
 				<text class="list-text">申请自建组织</text>
 				<text class="navigat-arrow">&#xe65e;</text>
@@ -63,12 +63,16 @@
 		methods: {
 			goLogin() {
 				if (!this.login) {
-					console.log("点击前往登录")
+					console.log("点击前往登录");
 				}
 			},
 			toinfo() {
-				this.$openPage('info')
-			}
+				this.$openPage('info');
+			},
+			toapprove() {
+				console.log("approve");
+				this.$openPage('orgapprove')
+			},
 		}
 	}
 </script>

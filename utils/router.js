@@ -55,7 +55,16 @@ const router = new MinRouter({
 			type: 'navigateTo',
 			name: 'financial'
 		},
-		
+		{
+			path: 'pages/my/orgAprove/orgAprove',
+			type: 'navigateTo',
+			name: 'orgapprove'
+		},
+		{
+			path:'pages/work/reimburse/reimburse',
+			type:'navigateTo',
+			name:'reimberse'
+		},
 		
 		
 		

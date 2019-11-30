@@ -5,12 +5,13 @@
 				<view class="input-view">
 				    <view class="input-name">
 				        <view>标题</view>
-				        <input type="text" v-model="formData.title" placeholder="请输入标题" />
+				        <input type="text" v-model="formData.todoAbstract" placeholder="请输入标题" />
 				    </view>
 				    <view class="input-password">
 				        <view>协助人</view>
-				        <input type="text" password placeholder="请输入协助人"  />
+				        <input type="text" v-model="formData.assistantPersonId" placeholder="请输入协助人"  />
 				    </view>
+					
 					<view class="uni-list">
 						<view class="uni-list-cell">
 							<view class="uni-list-cell-left" style="font-size: 28upx; ">
@@ -23,12 +24,25 @@
 							</view>
 						</view>
 					</view>
+					<view class="input-date">
+						<view class="view-date">完成时间</view>
+						<view  class="view-input-date">
+							<ruiDatePicker
+							fields="second"
+							start="2010-00-00 00:00:00"
+							end="2030-12-30 23:59:59"
+							:value="value"
+							@change="bindChange"
+							@cancel="bindCancel"></ruiDatePicker>
+						</view>
+					</view>
 					<view class="uni-textarea">
 						 <view>待办内容 </view>
 						 <view>
-							 <textarea @blur="bindTextAreaBlur" placeholder-style="color:#F76260" placeholder="     占位符字体是红色的"/>
+							 <textarea @blur="bindTextAreaBlur" placeholder-style="color:#808080" placeholder="     请输入代办内容"/>
 						 </view>
 					</view>
+					
 				</view>
 				
 				<view class="uni-btn-v uni-common-mt">
@@ -40,9 +54,12 @@
 	</view>
 </template>
 <script>
-	//来自 graceUI 的表单验证， 使用说明见手册 http://grace.hcoder.net/doc/info/73-3.html
 	var  graceChecker = require("../../../utils/graceChecker.js");
+	import ruiDatePicker from '@/components/rattenking-dtpicker/rattenking-dtpicker.vue';
 	export default {
+		components:{
+			ruiDatePicker
+		},
 		data() {
 			return {
 				title: '表单验证',
@@ -54,10 +71,13 @@
 				],
 				multiIndex: [0, 0, 0],
 				formData:{
-					title:'',
-					partcipant:'',
-					cc:'',
+					todoAbstract:'',
+					assistantPersonId:'',
+					copyPersonId:'',
 					content:'',
+					expectedCompletionTime:'',
+					createTime:'',
+					status:'0',
 					
 				},
 			}
@@ -67,24 +87,37 @@
 				//将下列代码加入到对应的检查位置
 				//定义表单规则
 				var rule = [
-					{name:"cc", checkType : "string", checkRule:"1,3",  errorMsg:"姓名应为1-3个字符"},
-					{name:"title", checkType : "in", checkRule:"男,女",  errorMsg:"请选择性别"},
-					{name:"loves", checkType : "notnull", checkRule:"",  errorMsg:"请选择爱好"}
+					{name:"todoAbstract", checkType : "string", checkRule:"1,4",  errorMsg:"请输入标题"},
+					{name:"assistantPersonId", checkType : "string", checkRule:"1,4",  errorMsg:"请输入抄送人"},
+					{name:"content", checkType : "string", checkRule:"1,23",  errorMsg:"请输入代办内容"},
+					{name:"copyPersonId", checkType : "string", checkRule:"1,4",  errorMsg:"请选择协助人"}
 				];
 				//进行表单检查
-				var formData = e.detail.value;
-				this.formData.cc=this.multiArray[0][this.multiIndex[0]];
+				this.formData.copyPersonId=this.multiArray[0][this.multiIndex[0]];
 				console.log(this.formData);
-				console.log(JSON.stringify(this.formData));
 				var checkRes = graceChecker.check(this.formData, rule);
 				if(checkRes){
-					uni.showToast({title:"验证通过!", icon:"none"});
+					this.$minApi.addTolist(JSON.stringify(this.formData)).then(res=>{
+					
+						uni.showToast({title:"添加成功!", icon:"none"});
+					}).catch(err =>{
+						uni.showToast({title:"添加失败!", icon:"none"});
+						})
 				}else{
 					uni.showToast({ title: graceChecker.error, icon: "none" });
 				}
 			},
 			formReset: function (e) {
 				console.log("清空数据")
+				this.chosen = ''
+			},
+			bindChange: function (e) {
+				console.log(new Date(e).getTime())
+				this.formData.expectedCompletionTime=new Date(e).getTime();
+				this.formData.createTime= new Date().getTime();
+			},
+			bindCancel: function (e) {
+				console.log(e)
 				this.chosen = ''
 			},
 			bindTextAreaBlur: function (e) {
@@ -226,7 +259,7 @@
 			font-family: inherit;
 			background: #E2E4EA;
 			opacity: 0.8;
-			bottom: -40rpx;
+			bottom: -100rpx;
 	}
 		
 	.uni-textarea{
@@ -236,5 +269,26 @@
 		line-height: 50upx;
 		font-size: 28upx;
 		color: #333333;
+		padding-top: 40upx;
 	}
+	.input-date{
+	    height: 80upx;
+	    width: 100%;
+	    display: flex;
+	    flex-direction: column;
+		align-content:center;
+	    position: relative;
+	    padding-left: 30upx;
+	    box-sizing: border-box;
+		font-size: 28upx;
+		color: #333333;
+		
+		
+	}
+	.view-input-date{
+		height: 80upx;
+		width: 100%;
+	}
+	
+	
 </style>

@@ -141,7 +141,7 @@
 						mainTeacher: '小A',
 						subTitle: '标题名称',
 						subColor: '#15639F',
-						icon: '/static/test2.png',
+						//icon: '/static/test2.png',
 						isFree: true
 					},
 					{
@@ -150,7 +150,7 @@
 						mainTeacher: '小B',
 						subTitle: '标题名称',
 						subColor: '#07B77B',
-						icon: '/static/test.png',
+						//icon: '/static/test.png',
 						isFree: false
 					},
 					{
@@ -159,11 +159,18 @@
 						mainTeacher: '小A',
 						subTitle: '标题名称',
 						subColor: '#15639F',
-						icon: '/static/test2.png',
+						//icon: '/static/test2.png',
 						isFree: true
 					}
 				],
-			show:false
+				page:{
+					'page':0,
+					'size':3,
+					'sort':'id,desc'
+				},
+				totalElements:0,
+			show:false,
+			todo:[]
 			}
 		},
 		onLoad() {
@@ -173,6 +180,7 @@
 				}).catch(err=>{
 					console.log("get user error")
 				})
+		  this.myTodo()
 		},
 		methods: {
 			open:function (x) {
@@ -202,13 +210,23 @@
 							this.$openPage("financial")
 							break
 					case 2:
+							this.$openPage("reimberse")
 							break
 					}
 			},
 			closeModal:function () {
 			    console.log(`监听到close`)
 			    this.show = false
-			}
+			},
+			myTodo: function () {
+			    console.log("todo");
+				this.$minApi.appTodoList(JSON.stringify(this.page)).then(res=>{
+				    
+					uni.showToast({title:"添加成功!", icon:"none"});
+				}).catch(err =>{
+					uni.showToast({title:"添加失败!", icon:"none"});
+					})
+			},
 
 		}
 	}

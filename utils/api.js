@@ -18,8 +18,18 @@ minRequest.interceptors.request((request) => {
 
 // 响应拦截器
 minRequest.interceptors.response((response) => {
+	//console.log(JSON.stringify(response));
 	console.log(response);
-	if (response.statusCode === 200) {
+	if(response.errMsg == "request:fail"){
+		uni.showModal({
+			content: "网络异常，请稍后重试！",
+			confirmText: "确定",
+			showCancel: false,
+		})
+		return
+	}
+	console.log('-----');
+	if (response.statusCode == 200 ||response.statusCode == 201) {
 		return response.data
 	} else{
 		uni.showModal({
@@ -40,6 +50,8 @@ minRequest.interceptors.response((response) => {
 					});
 					cache.set('_loginFlag',false)
 					cache.delete('_token')
+				}else{
+					console.log("error :"+response.data.status);
 				}
 			}
 		})
@@ -59,7 +71,7 @@ minRequest.interceptors.response((response) => {
 
 // 设置默认配置
 minRequest.setConfig((config) => {
-  config.baseURL = 'http://leo.free.idcfengye.com'
+  config.baseURL ='http://localhost:8000'  //'http://leo.free.idcfengye.com'
   return config
 })
 
@@ -76,10 +88,23 @@ export default {
 		return minRequest.post('/auth/applogin',data)
 	},
 	register (data) {
-		return minRequest.post('/auth/applogin',data)
+		return minRequest.post('/users/create',data)
 	},
 	modifyPwd (data) {
-		return minRequest.post('/auth/applogin',data)
-	}
+		return minRequest.post('/users/update',data)
+	},
+	addTolist (data) {
+		return minRequest.post('/api/todoList',data)
+	},
+	appTodoList (data) {
+		if(data.my==1){
+			return minRequest.get('/api/appTodoList?page='+data.page+'&size='+data.size+'&sort=id,desc&deleted=0')
+		}else{
+			return minRequest.get('/api/appMyTodoList?page='+data.page+'&size='+data.size+'&sort=id,desc&deleted=0')
+		}
+	},
+	addOrg (data) {
+		return minRequest.post('/api/adddept',data)
+	},
   }
 }

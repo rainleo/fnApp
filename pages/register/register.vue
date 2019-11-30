@@ -16,7 +16,7 @@
 				</view>
 
 				<view class=" has-radius has-mgtb-10">
-					<input placeholder="请输入登录密码" :password="true" v-model="pwd" class="is-input1" />
+					<input placeholder="请输入登录密码" :password="true" v-model="password" class="is-input1" />
 
 				</view>
 				<view class=" registerbtn has-radius has-mgtb-20">
@@ -45,7 +45,7 @@
 				timerId: null,
 				code: '',
 				phone:'',
-				pwd:'',
+				password:'',
 				phoneReg: /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/,
 			};
 		},
@@ -97,10 +97,17 @@
 				    console.log(JSON.stringify(result))
 				    if(result.code==1){
 				        //register 
-						this.$minApi.login(JSON.stringify(this.login)).then(res=>{
-							
+						var form ={'phone':this.phone,'password':this.password};
+						this.$minApi.register(JSON.stringify(form)).then(res=>{
+							uni.showToast({
+							  title: "注册成功！",
+							  icon: "none"
+							})
 							}).catch(err =>{
-								this.login.loading = false;
+								uni.showToast({
+								  title: "注册失败！",
+								  icon: "none"
+								})
 						})
 				    }else{
 				        uni.showToast({

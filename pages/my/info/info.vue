@@ -13,7 +13,7 @@
           <cmd-cel-item title="手机" :addon="user.phone"  arrow></cmd-cel-item>
           <cmd-cel-item title="邮箱" :addon="user.email" arrow></cmd-cel-item>
           <cmd-cel-item title="修改密码" @click="fnClick('modify')" arrow></cmd-cel-item>
-		  <button class="btn-logout">退出登录</button>
+		  <button class="btn-logout" @click="logout">退出登录</button>
         </view>
       </cmd-transition>
     </cmd-page-body>
@@ -72,6 +72,14 @@
           this.$openPage('modify')
         }
       },
+	  logout(){
+		console.log("11");
+		this.$cache.delete("_loginFlag");
+		this.$cache.delete("_token");
+		uni.reLaunch({
+			url:"../../login/login"
+		})
+	  },
 	  myinfo: function (e) {
 	  	this.$minApi.myinfo().then(res=>{
 			console.log(res)

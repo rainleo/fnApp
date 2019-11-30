@@ -93,6 +93,18 @@
 				"navigationBarTitleText" : "财务申请"
 			}
         }
+        ,{
+            "path" : "pages/my/orgAprove/orgAprove",
+            "style" : {
+            	"navigationBarTitleText" : "申请组织机构"
+            }
+        }
+        ,{
+            "path" : "pages/work/reimburse/reimburse",
+            "style" : {
+				"navigationBarTitleText":"报销申请"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
