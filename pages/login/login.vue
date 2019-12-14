@@ -83,6 +83,7 @@
 				this.$minApi.login(JSON.stringify(this.login)).then(res=>{
 					this.$cache.set('_loginFlag', true)
 					this.$cache.set('_token', res.token)
+					this.$cache.set('_userinfo',res.user)
 					var pages = getCurrentPages();
 					var currPage = pages[pages.length - 1]; //当前页面
 					this.url=this.$cache.get('url');

@@ -74,7 +74,7 @@
 						<view class="title">
 							<text class="first">{{it.title}}</text>
 							<text class="main">发起人：{{it.mainTeacher}}</text>
-							<text class="sub" :style="{color:it.subColor}">代办内容...</text>
+							<text class="sub" :style="{color:it.subColor}">{{it.subTitle}}</text>
 						</view>
 						<image class="image" :src="it.icon"></image>
 						<text class="free">待\n办</text>
@@ -221,7 +221,15 @@
 			myTodo: function () {
 			    console.log("todo");
 				this.$minApi.appTodoList(JSON.stringify(this.page)).then(res=>{
-				    
+					console.log("111");
+					let i = 0
+					for (let i = 0; i < res.content.length; i++) {
+						console.log(res.content[i]);
+						this.records[i].title= res.content[i].todoAbstract;
+						this.records[i].mainTeacher=res.content[i].copyPerson.username;
+						this.records[i].subTitle=res.content[i].content;
+					}
+					
 					uni.showToast({title:"添加成功!", icon:"none"});
 				}).catch(err =>{
 					uni.showToast({title:"添加失败!", icon:"none"});

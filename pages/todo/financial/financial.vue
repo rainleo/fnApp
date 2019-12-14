@@ -1,60 +1,38 @@
 <template>
 	<view>
 		<view class="uni-padding-wrap">
-			<form @submit="formSubmit" @reset="formReset">
+			<form @submit="formSubmit" >
 				<view class="input-view">
 				    <view class="input-name">
-				        <view>标题</view>
+				        <view>申请事项</view>
 				        <input type="text" v-model="formData.title" placeholder="请输入标题" />
 				    </view>
 				    <view class="input-password">
-				        <view>协助人</view>
+				        <view>申请金额</view>
 				        <input type="text" password placeholder="请输入协助人"  />
 				    </view>
 					<view class="uni-list">
 						<view class="uni-list-cell">
 							<view class="uni-list-cell-left" style="font-size: 28upx; ">
-								抄送人
+								审批人
 							</view>
 							<view class="uni-list-cell-db" style=" font-size: 32upx;color: #808080">
 								<picker  mode="multiSelector" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
-									<view class="uni-input">{{multiArray[0][multiIndex[0]]}} {{multiArray[1][multiIndex[1]]}} {{multiArray[2][multiIndex[2]]}}</view>
+									<view class="uni-input">{{multiArray[0][multiIndex[0]]}} {{multiArray[1][multiIndex[1]]}} {{multiArray[2][multiIndex[2]]}} {{multiArray[3][multiIndex[3]]}}</view>
 								</picker>
 							</view>
 						</view>
 					</view>
 					<view class="uni-textarea">
-						 <view>待办内容 </view>
+						 <view>事项描述 </view>
 						 <view>
 							 <textarea @blur="bindTextAreaBlur" placeholder-style="color:#F76260" placeholder="     占位符字体是红色的"/>
 						 </view>
 					</view>
 				</view>
-				<view class="uni-list list-pd">
-					<view class="uni-list-cell cell-pd">
-						<view class="uni-uploader">
-							<view class="uni-uploader-head">
-								<view class="uni-uploader-title">点击可预览选好的图片</view>
-								<view class="uni-uploader-info">{{imageList.length}}/9</view>
-							</view>
-							<view class="uni-uploader-body">
-								<view class="uni-uploader__files">
-									<block v-for="(image,index) in imageList" :key="index">
-										<view class="uni-uploader__file">
-											<image class="uni-uploader__img" :src="image" :data-src="image" @tap="previewImage"></image>
-										</view>
-									</block>
-									<view class="uni-uploader__input-box">
-										<view class="uni-uploader__input" @tap="chooseImage"></view>
-									</view>
-								</view>
-							</view>
-						</view>
-					</view>
-				</view>
+				
 				<view class="uni-btn-v uni-common-mt">
 					<button class="btn-submit" formType="submit" type="primary">Submit</button>
-					<button  class="btn-reset" type="default" formType="reset">Reset</button>
 				</view>
 			</form>
 		</view>
@@ -80,11 +58,12 @@
 				title: '表单验证',
 				index: 0,
 				multiArray: [
-					['1','2','3'],
-					['5','6','2'],
-					['3','4','3']
+					['1','2','3','5'],
+					['5','6','2','6'],
+					['3','4','3','5'],
+					['3','4','3','5']
 				],
-				multiIndex: [0, 0, 0],
+				multiIndex: [0, 0, 0,0],
 				formData:{
 					title:'',
 					partcipant:'',

@@ -72,6 +72,7 @@ minRequest.interceptors.response((response) => {
 // 设置默认配置
 minRequest.setConfig((config) => {
   config.baseURL ='http://localhost:8000'  //'http://leo.free.idcfengye.com'
+  //config.baseURL='http://leo.free.idcfengye.com'
   return config
 })
 
@@ -103,8 +104,14 @@ export default {
 			return minRequest.get('/api/appMyTodoList?page='+data.page+'&size='+data.size+'&sort=id,desc&deleted=0')
 		}
 	},
-	addOrg (data) {
-		return minRequest.post('/api/adddept',data)
+	appDeptQuery (data) {
+		return minRequest.get('/api/appDeptQuery?sort=id,desc'+'&pid='+data.id)
+	},
+	appJobQuery (data) {
+		return minRequest.get('/api/appJobQuery?page=0&size=100&sort=id,desc&deleted=0'+'&deptId='+data)
+	},
+	appUsersQuery (data) {
+		return minRequest.get('/api/appUsersQuery?page=0&size=100&sort=id,desc'+'&jobId='+data)
 	},
   }
 }

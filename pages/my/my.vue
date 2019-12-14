@@ -56,6 +56,7 @@
 		onLoad() {
 			this.login=this.$cache.get('_loginFlag')
 			if(this.$cache.get('_user') != null){
+				console.log(this.$cache.get('_user'));
 				this.uerInfo.name=this.$cache.get('_user').username
 				this.uerInfo.avatarUrl=this.$cache.get('_user').avatar
 			}
