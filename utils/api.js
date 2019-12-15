@@ -117,5 +117,14 @@ export default {
 	appUsersQuery (data) {
 		return minRequest.get('/api/appUsersQuery?page=0&size=100&sort=id,desc'+'&jobId='+data)
 	},
+	appAapplicationDocuments(data){
+		return minRequest.post('/api/appAapplicationDocuments',data)
+	},
+	appAuditChainQuery(data){
+		return minRequest.get('/api/appAuditChainQuery?page=0&size=100&sort=id,desc&deleted=0'+'&companyId='+data.companyId+'&source='+data.source)
+	},
+	appAccountingSubjectsQuery(data){
+		return minRequest.get('/api/appAccountingSubjectsQuery?page=0&size=100&sort=id,desc&deleted=0'+'&companyId='+data)
+	},
   }
 }

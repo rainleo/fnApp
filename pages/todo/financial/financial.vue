@@ -1,33 +1,44 @@
 <template>
 	<view>
 		<view class="uni-padding-wrap">
-			<form @submit="formSubmit" >
+			<form @submit="formSubmit">
 				<view class="input-view">
-				    <view class="input-name">
-				        <view>申请事项</view>
-				        <input type="text" v-model="formData.title" placeholder="请输入标题" />
-				    </view>
-				    <view class="input-password">
-				        <view>申请金额</view>
-				        <input type="text" password placeholder="请输入协助人"  />
-				    </view>
+					<view class="uni-list">
+						<view class="uni-list-cell">
+							<view class="uni-list-cell-left" style="font-size: 28upx;">
+								申请事项
+							</view>
+							<view class="uni-list-cell-db" style=" font-size: 32upx;color: #808080">
+								<picker @change="bindPickerChange" :value="index" :range="array">
+									<view class="uni-input">{{array[index]}}</view>
+								</picker>
+							</view>
+						</view>
+					</view>
+
+					<view class="input-password">
+						<view>申请金额</view>
+						<input type="text" v-model="formData.amount" placeholder="  请输入金额" />
+					</view>
 					<view class="uni-list">
 						<view class="uni-list-cell">
 							<view class="uni-list-cell-left" style="font-size: 28upx; ">
 								审批人
 							</view>
 							<view class="uni-list-cell-db" style=" font-size: 32upx;color: #808080">
-								<picker  mode="multiSelector" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
-									<view class="uni-input">{{multiArray[0][multiIndex[0]]}} {{multiArray[1][multiIndex[1]]}} {{multiArray[2][multiIndex[2]]}} {{multiArray[3][multiIndex[3]]}}</view>
+								<picker mode="multiSelector" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
+									<view class="uni-input" v-for="(item,idx) in auditJobArray" v-if="auditJobArray.length > 0" :key="idx">
+									{{multiArray[idx][multiIndex[idx]]}} 
+									</view>
 								</picker>
 							</view>
 						</view>
 					</view>
 					<view class="uni-textarea">
-						 <view>事项描述 </view>
-						 <view>
-							 <textarea @blur="bindTextAreaBlur" placeholder-style="color:#F76260" placeholder="     占位符字体是红色的"/>
-						 </view>
+						<view>事项描述 </view>
+						<view>
+							<textarea @blur="bindTextAreaBlur" placeholder-style="color:#808080" placeholder="     请输入事项描述" />
+							</view>
 					</view>
 				</view>
 				
@@ -41,62 +52,125 @@
 <script>
 	//来自 graceUI 的表单验证， 使用说明见手册 http://grace.hcoder.net/doc/info/73-3.html
 	var  graceChecker = require("../../../utils/graceChecker.js");
-	var sourceType = [
-		['camera'],
-		['album'],
-		['camera', 'album']
-	]
-	var sizeType = [
-		['compressed'],
-		['original'],
-		['compressed', 'original']
-	]
+	
 	export default {
 		
 		data() {
 			return {
 				title: '表单验证',
 				index: 0,
+				array: ['选择申请事项'],
+				arrayData:[],
 				multiArray: [
-					['1','2','3','5'],
-					['5','6','2','6'],
-					['3','4','3','5'],
-					['3','4','3','5']
 				],
-				multiIndex: [0, 0, 0,0],
+				muliArrayData:[],
+				multiIndex: [],
 				formData:{
-					title:'',
-					partcipant:'',
-					cc:'',
-					content:'',
-					
+					accountingSubjectsId:'',
+					applicationDescription:'',
+					amount:'',
+					reviewerList:[
+					],
+					companyId:'',
+					deptId:''
 				},
-				imageList: [],
-				sourceTypeIndex: 2,
-				sourceType: ['拍照', '相册', '拍照或相册'],
-				sizeTypeIndex: 2,
-				sizeType: ['压缩', '原图', '压缩或原图'],
-				countIndex: 8,
-				count: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+				auditQuery:{
+					source:0,
+					companyId:''
+				},
+				auditJobArray:[]
+				
 			}
 		},
+		onLoad() {
+			this.getSubject();
+			this.getAuditUser();	
+		},
 		methods: {
+			getUser: function(e,pos){
+					this.$minApi.appUsersQuery(e).then(res=>{
+					if(res.content.length===0)
+					 {
+						 this.multiArray[0]=['未设置审批岗位员工'];
+						 return
+					 }
+					this.muliArrayData[pos]=res.content
+					for (let i = 0; i < res.content.length; i++) {
+						this.multiArray[pos][i]=res.content[i].username
+					}
+					this.$forceUpdate()
+					}).catch(err =>{
+						uni.showToast({title:"添加失败!", icon:"none"});
+						})	
+			},
+			getAuditUser: function(){
+					this.$minApi.appAuditChainQuery({source:0,companyId:this.$cache.get('_userinfo').companyId}).then(res=>{
+					if(res.content.length===0)
+					 {
+						 this.multiArray[0]=['未设置审批链请联系管理员','','',''];
+						 return
+					 }
+					for (let i = 0; i < res.content.length; i++) {
+						this.auditJobArray.push(res.content[i].jobId)
+						this.muliArrayData.push([])
+						this.getUser(res.content[i].jobId,i)
+						this.multiIndex.push(0)
+						this.multiArray.push([])
+						this.formData.reviewerList.push({});
+						
+					}
+					this.$forceUpdate()
+					}).catch(err =>{
+						uni.showToast({title:"添加失败!", icon:"none"});
+						})	
+			},
+			getSubject: function(){
+					this.$minApi.appAccountingSubjectsQuery(this.$cache.get('_userinfo').companyId).then(res=>{
+					if(res.content.length===0)
+					 {
+						 this.array=['未设置财务事项'];
+						 return
+					 }
+					this.arrayData=res.content
+					var array=[]
+					for (let i = 0; i < res.content.length; i++) {
+						array.push(res.content[i].subjectName)
+					}
+					this.array=array
+					this.$forceUpdate()
+					}).catch(err =>{
+						uni.showToast({title:"添加失败!", icon:"none"});
+						})	
+			},
 			formSubmit: function (e) {
 				//将下列代码加入到对应的检查位置
 				//定义表单规则
 				var rule = [
-					{name:"cc", checkType : "string", checkRule:"1,3",  errorMsg:"姓名应为1-3个字符"},
-					{name:"title", checkType : "in", checkRule:"男,女",  errorMsg:"请选择性别"},
-					{name:"loves", checkType : "notnull", checkRule:"",  errorMsg:"请选择爱好"}
+					{name:"accountingSubjectsId", checkType : "string", checkRule:"1,10",  errorMsg:"应为1-10个字符"},
+					{name:"applicationDescription", checkType : "string", checkRule:"1,100",  errorMsg:"最多100字符"},
+					{name:"amount", checkType : "notnull", checkRule:"",  errorMsg:"请输入金额"}
 				];
+				this.formData.accountingSubjectsId=this.arrayData[this.index].id
+				this.formData.companyId=this.$cache.get('_userinfo').companyId
+				this.formData.deptId=this.$cache.get('_userinfo').deptId
 				//进行表单检查
-				var formData = e.detail.value;
-				this.formData.cc=this.multiArray[0][this.multiIndex[0]];
-				console.log(this.formData);
+				this.formData.reviewerList=[]
+				for (let i = 0; i < this.multiIndex.length; i++) {
+					let obj ={userId:'',sorted:''}
+					obj.userId=this.muliArrayData[i][this.multiIndex[i]].id
+					obj.sorted=i+1
+					this.formData.reviewerList[i]=obj
+				}
 				console.log(JSON.stringify(this.formData));
 				var checkRes = graceChecker.check(this.formData, rule);
 				if(checkRes){
-					uni.showToast({title:"验证通过!", icon:"none"});
+					this.$minApi.appAapplicationDocuments(JSON.stringify(this.formData)).then(res=>{
+					this.$openPage({
+					 	name: 'work'
+					 })
+					}).catch(err =>{
+						uni.showToast({title:"添加失败!", icon:"none"});
+						})
 				}else{
 					uni.showToast({ title: graceChecker.error, icon: "none" });
 				}
@@ -105,110 +179,17 @@
 				console.log("清空数据")
 				this.chosen = ''
 			},
-			chooseImage: async function() {
-					if (this.imageList.length === 9) {
-						let isContinue = await this.isFullImg();
-						console.log("是否继续?", isContinue);
-						if (!isContinue) {
-							return;
-						}
-					}
-					uni.chooseImage({
-						sourceType: sourceType[this.sourceTypeIndex],
-						sizeType: sizeType[this.sizeTypeIndex],
-						count: this.imageList.length + this.count[this.countIndex] > 9 ? 9 - this.imageList.length : this.count[this.countIndex],
-						success: (res) => {
-							this.imageList = this.imageList.concat(res.tempFilePaths);
-						}
-					})
-				},
-				isFullImg: function() {
-					return new Promise((res) => {
-						uni.showModal({
-							content: "已经有9张图片了,是否清空现有图片？",
-							success: (e) => {
-								if (e.confirm) {
-									this.imageList = [];
-									res(true);
-								} else {
-									res(false)
-								}
-							},
-							fail: () => {
-								res(false)
-							}
-						})
-					})
-				},
-				previewImage: function(e) {
-					console.log(this.imageList);
-					var current = e.target.dataset.src
-					uni.previewImage({
-						current: current,
-						urls: this.imageList
-					})
-				},
 			bindTextAreaBlur: function (e) {
 			            console.log(e.detail.value)
-						this.formData.content=e.detail.value
+						this.formData.applicationDescription=e.detail.value
 			},
-					
+			bindPickerChange: function(e){
+				this.index=e.detail.value
+			
+			},	
 			bindMultiPickerColumnChange: function(e) {
 				console.log('修改的列为：' + e.detail.column + '，值为：' + e.detail.value)
 				this.multiIndex[e.detail.column] = e.detail.value
-				switch (e.detail.column) {
-					case 0:
-						switch (this.multiIndex[0]) {
-							case 0:
-								this.multiArray[1] = ['扁性动物', '线形动物', '环节动物', '软体动物', '节肢动物']
-								this.multiArray[2] = ['猪肉绦虫', '吸血虫']
-								break
-							case 1:
-								this.multiArray[1] = ['鱼', '两栖动物', '爬行动物']
-								this.multiArray[2] = ['鲫鱼', '带鱼']
-								break
-						}
-						this.multiIndex[1] = 0
-						this.multiIndex[2] = 0
-						break
-					case 1:
-						switch (this.multiIndex[0]) {
-							case 0:
-								switch (this.multiIndex[1]) {
-									case 0:
-										this.multiArray[2] = ['猪肉绦虫', '吸血虫']
-										break
-									case 1:
-										this.multiArray[2] = ['蛔虫']
-										break
-									case 2:
-										this.multiArray[2] = ['蚂蚁', '蚂蟥']
-										break
-									case 3:
-										this.multiArray[2] = ['河蚌', '蜗牛', '蛞蝓']
-										break
-									case 4:
-										this.multiArray[2] = ['昆虫', '甲壳动物', '蛛形动物', '多足动物']
-										break
-								}
-								break
-							case 1:
-								switch (this.multiIndex[1]) {
-									case 0:
-										this.multiArray[2] = ['鲫鱼', '带鱼']
-										break
-									case 1:
-										this.multiArray[2] = ['青蛙', '娃娃鱼']
-										break
-									case 2:
-										this.multiArray[2] = ['蜥蜴', '龟', '壁虎']
-										break
-								}
-								break
-						}
-						this.multiIndex[2] = 0
-						break
-				}
 				this.$forceUpdate()
 			}
 		}

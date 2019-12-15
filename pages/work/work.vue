@@ -221,16 +221,13 @@
 			myTodo: function () {
 			    console.log("todo");
 				this.$minApi.appTodoList(JSON.stringify(this.page)).then(res=>{
-					console.log("111");
-					let i = 0
 					for (let i = 0; i < res.content.length; i++) {
 						console.log(res.content[i]);
 						this.records[i].title= res.content[i].todoAbstract;
 						this.records[i].mainTeacher=res.content[i].copyPerson.username;
 						this.records[i].subTitle=res.content[i].content;
 					}
-					
-					uni.showToast({title:"添加成功!", icon:"none"});
+					this.$forceUpdate();
 				}).catch(err =>{
 					uni.showToast({title:"添加失败!", icon:"none"});
 					})
