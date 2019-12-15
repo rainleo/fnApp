@@ -21,7 +21,6 @@ Vue.component('min-a', mina)
 Vue.use(MinCache)
 // 设置默认缓存时间
 // Vue.use(MinCache, {timeout: 600})
-
 const app = new Vue({
     ...App,
 	minRouter,

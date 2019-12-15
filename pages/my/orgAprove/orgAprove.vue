@@ -154,7 +154,7 @@
 						this.imageList = this.imageList.concat(res.tempFilePaths);
 						for (let i = 0; i < res.tempFilePaths.length; i++) {
 							uni.uploadFile({
-								url: 'http://localhost:8000' + '/api/qiNiuContentall',
+								url: this.$minApi.url() + '/api/qiNiuContentall',
 								//files: this.files,
 								fileType: 'image',
 								filePath: res.tempFilePaths[i],

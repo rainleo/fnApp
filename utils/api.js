@@ -4,6 +4,7 @@ import MinRouter from './router'
 const minRequest = new MinRequest()
 const cache = new MinCache()
 // 请求拦截器
+const websiteUrl = 'http://localhost:8000';
 minRequest.interceptors.request((request) => {
 	console.log("添加token");
 	const value = cache.get('_loginFlag');
@@ -71,7 +72,7 @@ minRequest.interceptors.response((response) => {
 
 // 设置默认配置
 minRequest.setConfig((config) => {
-  config.baseURL ='http://localhost:8000'  //'http://leo.free.idcfengye.com'
+  config.baseURL =websiteUrl//'http://localhost:8000'  //'http://leo.free.idcfengye.com'
   //config.baseURL='http://leo.free.idcfengye.com'
   return config
 })
@@ -79,6 +80,9 @@ minRequest.setConfig((config) => {
 
 export default {
   apis: {
+	 url(){
+		  return websiteUrl
+	  },
      vcode () {
       return minRequest.get('/auth/vCode')
     },

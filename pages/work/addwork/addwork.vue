@@ -45,7 +45,7 @@
 					<view class="uni-textarea">
 						<view>待办内容 </view>
 						<view>
-							<textarea @blur="bindTextAreaBlur" placeholder-style="color:#808080" placeholder="     请输入代办内容" />
+							<textarea @blur="bindTextAreaBlur" placeholder-style="color:#808080 " placeholder="     请输入代办内容" />
 							</view>
 					</view>
 					
