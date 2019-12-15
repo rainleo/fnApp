@@ -105,6 +105,18 @@
 				"navigationBarTitleText":"报销申请"
 			}
         }
+        ,{
+            "path" : "pages/work/myapprove/myapprove",
+            "style" : {
+				"navigationBarTitleText":"报销申请"
+			}
+        }
+        ,{
+            "path" : "pages/work/myreimburse/myreimburse",
+            "style" : {
+				"navigationBarTitleText":"我的报销"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

@@ -114,7 +114,7 @@
 					{
 						bg: 'linear-gradient(0deg,rgba(9,177,252,1),rgba(24,200,255,1))',
 						icon: '/static/question_bank.png',
-						txt: '建设中',
+						txt: '我的报销',
 						isFree: true
 					}
 				],
@@ -210,9 +210,12 @@
 							this.$openPage("financial")
 							break
 					case 2:
-							this.$openPage("reimberse")
+							this.$openPage("myapprove")
 							break
-					}
+
+					case 3:
+							this.$openPage("myreimburse")
+							break					}
 			},
 			closeModal:function () {
 			    console.log(`监听到close`)

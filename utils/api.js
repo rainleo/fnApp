@@ -126,5 +126,14 @@ export default {
 	appAccountingSubjectsQuery(data){
 		return minRequest.get('/api/appAccountingSubjectsQuery?page=0&size=100&sort=id,desc&deleted=0'+'&companyId='+data)
 	},
+	appApplicationDocumentsQuery (data) {
+		if(data.my==1){
+			//审批中审批通过待申请
+			return minRequest.get('/api/appApplicationDocumentsQuery?page='+data.page+'&size='+data.size+'&sort=id,desc&deleted=0&status=1')
+		}else{
+			//审批中
+			return minRequest.get('/api/appApplicationDocumentsQuery?page='+data.page+'&size='+data.size+'&sort=id,desc&deleted=0&status=0')
+		}
+	},
   }
 }

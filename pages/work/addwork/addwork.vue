@@ -130,7 +130,7 @@
 				if(checkRes){
 					this.$minApi.addTolist(JSON.stringify(this.formData)).then(res=>{
 					this.$openPage({
-						name: 'work'
+						name: 'todo'
 					})
 					}).catch(err =>{
 						uni.showToast({title:"添加失败!", icon:"none"});

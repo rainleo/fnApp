@@ -165,9 +165,7 @@
 				var checkRes = graceChecker.check(this.formData, rule);
 				if(checkRes){
 					this.$minApi.appAapplicationDocuments(JSON.stringify(this.formData)).then(res=>{
-					this.$openPage({
-					 	name: 'work'
-					 })
+					 this.$openPage("myapprove")
 					}).catch(err =>{
 						uni.showToast({title:"添加失败!", icon:"none"});
 						})

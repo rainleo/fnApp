@@ -65,7 +65,17 @@ const router = new MinRouter({
 			type:'navigateTo',
 			name:'reimberse'
 		},
-		
+		{
+			path:'pages/work/myapprove/myapprove',
+			type:'navigateTo',
+			name:'myapprove'
+		},
+		{
+			path:'pages/work/myreimburse/myreimburse',
+			type:'navigateTo',
+			name:'myreimburse'
+			
+		},
 		
 		
 	] 
