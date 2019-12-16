@@ -22,7 +22,9 @@
 							</view>
 							<view class="uni-list-cell-db" style=" font-size: 32upx;color: #808080">
 								<picker  mode="multiSelector" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
-									<view class="uni-input">{{multiArray[0][multiIndex[0]]}} {{multiArray[1][multiIndex[1]]}} {{multiArray[2][multiIndex[2]]}}</view>
+									<view class="uni-input" v-for="(item,idx) in auditJobArray" v-if="auditJobArray.length > 0" :key="idx">
+											{{multiArray[idx][multiIndex[idx]]}} 
+									</view>
 								</picker>
 							</view>
 						</view>
@@ -84,18 +86,25 @@
 				title: '表单验证',
 				index: 0,
 				multiArray: [
-					['1','2','3'],
-					['5','6','2'],
-					['3','4','3']
 				],
-				multiIndex: [0, 0, 0],
+				muliArrayData:[],
+				multiIndex: [],
 				formData:{
 					title:'',
 					partcipant:'',
 					cc:'',
 					content:'',
-					
+					reimbursementDetailList: [],
+					reviewerList:[
+					],
+					companyId:'',
+					deptId:''
 				},
+				auditQuery:{
+					source:0,
+					companyId:''
+				},
+				auditJobArray:[],
 				imageList: [],
 				sourceTypeIndex: 2,
 				sourceType: ['拍照', '相册', '拍照或相册'],
@@ -104,6 +113,11 @@
 				countIndex: 8,
 				count: [1, 2, 3, 4, 5, 6, 7, 8, 9]
 			}
+		},
+		onLoad() {
+			console.log(this.$parseURL().applicationNo)	
+			this.formData.no=this.$parseURL().applicationNo
+			this.getAuditUser()
 		},
 		methods: {
 			formSubmit: function (e) {
@@ -126,6 +140,43 @@
 					uni.showToast({ title: graceChecker.error, icon: "none" });
 				}
 			},
+			getUser: function(e,pos){
+					this.$minApi.appUsersQuery(e).then(res=>{
+					if(res.content.length===0)
+					 {
+						 this.multiArray[0]=['未设置审批岗位员工'];
+						 return
+					 }
+					this.muliArrayData[pos]=res.content
+					for (let i = 0; i < res.content.length; i++) {
+						this.multiArray[pos][i]=res.content[i].username
+					}
+					this.$forceUpdate()
+					}).catch(err =>{
+						uni.showToast({title:"添加失败!", icon:"none"});
+						})	
+			},
+			getAuditUser: function(){
+					this.$minApi.appAuditChainQuery({source:1,companyId:this.$cache.get('_userinfo').companyId}).then(res=>{
+					if(res.content.length===0)
+					 {
+						 this.multiArray[0]=['未设置审批链请联系管理员','','',''];
+						 return
+					 }
+					for (let i = 0; i < res.content.length; i++) {
+						this.auditJobArray.push(res.content[i].jobId)
+						this.muliArrayData.push([])
+						this.getUser(res.content[i].jobId,i)
+						this.multiIndex.push(0)
+						this.multiArray.push([])
+						this.formData.reviewerList.push({});
+						
+					}
+					this.$forceUpdate()
+					}).catch(err =>{
+						uni.showToast({title:"添加失败!", icon:"none"});
+						})	
+			},
 			formReset: function (e) {
 				console.log("清空数据")
 				this.chosen = ''
@@ -139,13 +190,48 @@
 						}
 					}
 					uni.chooseImage({
-						sourceType: sourceType[this.sourceTypeIndex],
-						sizeType: sizeType[this.sizeTypeIndex],
-						count: this.imageList.length + this.count[this.countIndex] > 9 ? 9 - this.imageList.length : this.count[this.countIndex],
-						success: (res) => {
-							this.imageList = this.imageList.concat(res.tempFilePaths);
+					sourceType: sourceType[this.sourceTypeIndex],
+					sizeType: sizeType[this.sizeTypeIndex],
+					count: this.imageList.length + this.count[this.countIndex] > 9 ? 9 - this.imageList.length : this.count[this.countIndex],
+					success: (res) => {
+
+						this.imageList = this.imageList.concat(res.tempFilePaths);
+						for (let i = 0; i < res.tempFilePaths.length; i++) {
+							uni.uploadFile({
+								url: this.$minApi.url() + '/api/qiNiuContentall',
+								//files: this.files,
+								fileType: 'image',
+								filePath: res.tempFilePaths[i],
+								header: {
+									'Authorization': "Bearer " + this.$cache.get('_token')
+								},
+								//header:Authorization: "Bearer "+this.$cache.get('_token'), 
+								name: 'file',
+								success: (uploadFileRes) => {
+									let data = JSON.parse(uploadFileRes.data)
+									console.log(data);
+									console.log(this.formData.reimbursementDetailList.length);
+									if(this.formData.reimbursementDetailList.length==0){
+										this.formData.reimbursementDetailList=data;
+									}else{
+										console.log(data[0]);
+										this.formData.reimbursementDetailList.push(data[0]);
+									}
+									console.log(this.formData.reimbursementDetailList);
+						
+								},
+								fail: (err) => {
+									console.log(err);
+								}
+							});
+						
 						}
-					})
+						
+						//console.log(res.tempFiles);
+						//console.log(res.tempFilePaths);
+						//console.log(this.imageList);
+					}
+				})
 				},
 				isFullImg: function() {
 					return new Promise((res) => {
@@ -181,59 +267,6 @@
 			bindMultiPickerColumnChange: function(e) {
 				console.log('修改的列为：' + e.detail.column + '，值为：' + e.detail.value)
 				this.multiIndex[e.detail.column] = e.detail.value
-				switch (e.detail.column) {
-					case 0:
-						switch (this.multiIndex[0]) {
-							case 0:
-								this.multiArray[1] = ['扁性动物', '线形动物', '环节动物', '软体动物', '节肢动物']
-								this.multiArray[2] = ['猪肉绦虫', '吸血虫']
-								break
-							case 1:
-								this.multiArray[1] = ['鱼', '两栖动物', '爬行动物']
-								this.multiArray[2] = ['鲫鱼', '带鱼']
-								break
-						}
-						this.multiIndex[1] = 0
-						this.multiIndex[2] = 0
-						break
-					case 1:
-						switch (this.multiIndex[0]) {
-							case 0:
-								switch (this.multiIndex[1]) {
-									case 0:
-										this.multiArray[2] = ['猪肉绦虫', '吸血虫']
-										break
-									case 1:
-										this.multiArray[2] = ['蛔虫']
-										break
-									case 2:
-										this.multiArray[2] = ['蚂蚁', '蚂蟥']
-										break
-									case 3:
-										this.multiArray[2] = ['河蚌', '蜗牛', '蛞蝓']
-										break
-									case 4:
-										this.multiArray[2] = ['昆虫', '甲壳动物', '蛛形动物', '多足动物']
-										break
-								}
-								break
-							case 1:
-								switch (this.multiIndex[1]) {
-									case 0:
-										this.multiArray[2] = ['鲫鱼', '带鱼']
-										break
-									case 1:
-										this.multiArray[2] = ['青蛙', '娃娃鱼']
-										break
-									case 2:
-										this.multiArray[2] = ['蜥蜴', '龟', '壁虎']
-										break
-								}
-								break
-						}
-						this.multiIndex[2] = 0
-						break
-				}
 				this.$forceUpdate()
 			}
 		}
@@ -312,7 +345,7 @@
 			font-family: inherit;
 			background: #E2E4EA;
 			opacity: 0.8;
-			bottom: -40rpx;
+			bottom: -100rpx;
 	}
 		
 	.uni-textarea{

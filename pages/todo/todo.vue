@@ -83,7 +83,26 @@ export default {
 				})
 		
 	},
-	onShow() {},
+	onShow() {
+		
+			this.$minApi.appTodoList(this.page).then(res=>{
+			  this.totalElements[0]=res.totalElements;
+			  this.list[0]=res.content;
+				this.$forceUpdate();
+			}).catch(err =>{
+				console.log("error");
+				})
+		    this.page.my=1;
+			this.$minApi.appTodoList(this.page).then(res=>{
+				  this.totalElements[1]=res.totalElements;
+				  this.list[1]=res.content;
+					this.$forceUpdate();
+				}).catch(err =>{
+					console.log("error");
+					})
+			
+		
+	},
 	onHide() {},
 	methods: {
 		toTop(){

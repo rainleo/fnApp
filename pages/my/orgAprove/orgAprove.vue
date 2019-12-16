@@ -34,7 +34,6 @@
 
 				<view class="uni-btn-v uni-common-mt">
 					<button class="btn-submit" formType="submit" type="primary" :disabled="submitclose">Submit</button>
-					<button class="btn-reset" type="default" formType="reset">Reset</button>
 				</view>
 			</form>
 		</view>

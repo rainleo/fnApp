@@ -16,12 +16,13 @@
 				<scroll-view style="height: 100%;" scroll-y="true" @scrolltolower="lower1" scroll-with-animation :scroll-into-view="toView">
 				<view :id="'top'+listIndex" style="width: 100%;height: 180upx;">边距盒子</view>
 				<view class='content'>
-					<view class='card' v-for="(item,index) in listItem" v-if="listItem.length > 0" :key="index" @click="updateTo(item.id)">
+					<view class='card' v-for="(item,index) in listItem" v-if="listItem.length > 0" :key="index" @click="updateTo(item.applicationNo)">
 						事项：{{item.subjectName}}
 						<view class="uni-media-list-body">
 							<view class="uni-media-list-text-bottom">
 								<text>金额：</text><div v-if="item.amount">{{item.amount}}</div>
 								<text>审批状态：</text> <div v-if="item.status">{{item.status}}</div>
+								<text>申请单号：{{item.applicationNo}}</text>
 							</view>
 							<view class="uni-media-list-text-top">描述   </view>
 							{{item.applicationDescription}}
@@ -98,7 +99,10 @@ export default {
 		updateTo(index){
 		 console.log(index);
 		 if(this.currentTab==1){
-			 this.$openPage("reimberse")
+			 this.$openPage({
+				 name:"reimberse",
+				 query:{applicationNo:index}
+			 })
 		 }
 		},
 		// 其他请求事件 当然刷新和其他请求可以写一起 多一层判断。

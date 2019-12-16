@@ -1,6 +1,5 @@
 <template>
   <view>
-    <cmd-nav-bar back title="个人信息"></cmd-nav-bar>
     <cmd-page-body type="top">
       <cmd-transition name="fade-up">
         <view>

@@ -101,6 +101,9 @@ export default {
 	addTolist (data) {
 		return minRequest.post('/api/todoList',data)
 	},
+	addOrg (data) {
+	  return minRequest.post('/api/appDeptAdd',data)
+	},
 	appTodoList (data) {
 		if(data.my==1){
 			return minRequest.get('/api/appTodoList?page='+data.page+'&size='+data.size+'&sort=id,desc&deleted=0')
@@ -133,6 +136,18 @@ export default {
 		}else{
 			//审批中
 			return minRequest.get('/api/appApplicationDocumentsQuery?page='+data.page+'&size='+data.size+'&sort=id,desc&deleted=0&status=0')
+		}
+	},
+	appReimbursementDocuments(data){
+		return minRequest.post('/api/appReimbursementDocuments',data)
+	},
+	appReimbursementDocumentsQuery (data) {
+		if(data.my==1){
+			//审批通过
+			return minRequest.get('/api/appReimbursementDocumentsQuery?page='+data.page+'&size='+data.size+'&sort=id,desc&deleted=0&status=1')
+		}else{
+			//审批中
+			return minRequest.get('/api/appReimbursementDocumentsQuery?page='+data.page+'&size='+data.size+'&sort=id,desc&deleted=0&status=0')
 		}
 	},
   }
