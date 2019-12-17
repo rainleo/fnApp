@@ -16,14 +16,16 @@
 				<scroll-view style="height: 100%;" scroll-y="true" @scrolltolower="lower1" scroll-with-animation :scroll-into-view="toView">
 				<view :id="'top'+listIndex" style="width: 100%;height: 180upx;">边距盒子</view>
 				<view class='content'>
-					<view class='card' v-for="(item,index) in listItem" v-if="listItem.length > 0" :key="index" @click="dealApprove(1)">
-						标题：
+					<view class='card' v-for="(item,index) in listItem" v-if="listItem.length > 0" :key="index" @click="updateTo(item.applicationNo)">
+						事项：{{item.subjectName}}
 						<view class="uni-media-list-body">
 							<view class="uni-media-list-text-bottom">
-								<text>发起人：</text>
-								<text>抄送人：</text>
+								<text>金额：</text><div v-if="item.amount">{{item.amount}}</div>
+								<text>审批状态：</text> <div v-if="item.status">{{item.status}}</div>
+								<text>申请单号：{{item.applicationNo}}</text>
 							</view>
-							<view class="uni-media-list-text-top">内容 </view>
+							<view class="uni-media-list-text-top">描述   </view>
+							{{item.applicationDescription}}
 						</view>
 					</view>
 				</view>
@@ -42,19 +44,45 @@
 const util = require('../../../utils/util.js');
 import refresh from '../../../components/refresh.vue';
 import navTab from '../../../components/navTab.vue';
-//import tabBar4 from '../../../components/tabBar4.vue';
+//import tabBar4 from '../../components/tabBar4.vue';
 export default {
 	components: {refresh,navTab},
 	data() {
 		return {
 			toView:'',//回到顶部id
 		    currentTab: 0, //sweiper所在页
-			pages:[1,1], //第几页存储 
-			tabTitle:['申请','报销'], //导航栏格式
-			list: [[1, 2, 3, 4, 5, 6],['a', 'b', 'c', 'd', 'e', 'f']] //数据格式
+			pages:[0,0], //第几页存储 
+			tabTitle:['申请审批','报销审批',], //导航栏格式
+			list: [[],[]] ,//数据格式
+			page:{
+				page:0,
+				size:5,
+				sort:'id,desc',
+				delete:0,
+				tab:0,
+				my:0,
+			},
+			totalElements:[0,0],
+			
 		  };
 	},
 	onLoad(e) {
+		this.$minApi.appApproveQuery(this.page).then(res=>{
+		  this.totalElements[0]=res.totalElements;
+		  this.list[0]=res.content;
+			this.$forceUpdate();
+		}).catch(err =>{
+			console.log(err);
+			console.log("error");
+			})
+	    this.page.my=1;
+		this.$minApi.appApproveQuery(this.page).then(res=>{
+			  this.totalElements[1]=res.totalElements;
+			  this.list[1]=res.content;
+				this.$forceUpdate();
+			}).catch(err =>{
+				console.log("error");
+				})
 		
 	},
 	onShow() {},
@@ -69,21 +97,48 @@ export default {
 		changeTab(index){
 			this.currentTab = index
 		},
-		
+		updateTo(index){
+		 console.log(index);
+		 if(this.currentTab==1){
+			 this.$openPage({
+				 name:"reimberse",
+				 query:{applicationNo:index}
+			 })
+		 }
+		},
 		// 其他请求事件 当然刷新和其他请求可以写一起 多一层判断。
 		isRequest(pages) {
 			return new Promise((resolve, reject) => {
+				console.log("refresss");
 				this.pages[this.currentTab]++
+					
+				if((this.pages[this.currentTab])*this.page.size >= this.totalElements[this.currentTab]){
+					console.log("no more data");
+					uni.hideLoading();
+					uni.showToast({title:"没有数据了!", icon:"none"});
+					return;
+				}
+				this.page.tab=this.currentTab;
+				this.page.page=this.pages[this.currentTab];
 				var that = this
-				setTimeout(() => {
-					uni.hideLoading()
-					uni.showToast({
-						icon: 'none',
-						title: `请求第${that.currentTab + 1 }个导航栏的第${that.pages[that.currentTab]}页数据成功`
+				this.page.my=this.currentTab;
+				//refresh data
+				this.$minApi.appApproveQuery(this.page).then(res=>{
+				  this.totalElements[this.currentTab]=res.totalElements;
+				  let newData =res.content;
+				  console.log(res);
+				  console.log("refress success");
+				  resolve(newData)
+				}).catch(err =>{
+					console.log("refresh fail")
+					uni.showToast({title:"刷新失败!", icon:"none"});
 					})
-					let newData = ['新数据1','新数据2','新数据3']
-					resolve(newData)
-				}, 1000)
+				
+				//let newData = ['新数据1','新数据2','新数据3']
+				
+				uni.hideLoading();
+				
+				
 			})
 		},
 		// swiper 滑动
@@ -94,9 +149,6 @@ export default {
 			}else{
 				this.$refs.navTab.longClick(index)
 			}
-		},
-		dealApprove: function(e) {
-			console.log(e);
 		},
 		// 加载更多 util.throttle为防抖函数
 		lower1: util.throttle(function(e) {

@@ -152,5 +152,14 @@ export default {
 			return minRequest.get('/api/appReimbursementDocumentsQuery?page='+data.page+'&size='+data.size+'&sort=id,desc&deleted=0&status=0')
 		}
 	},
+	appApproveQuery (data) {
+		if(data.my==0){
+			//申请审批
+			return minRequest.get('/api/appApplicationDocumentsQuery?page='+data.page+'&size='+data.size+'&sort=id,desc&deleted=0&status=0')
+		}else{
+			//报销审批
+			return minRequest.get('/api/appReimbursementDocumentsQuery?page='+data.page+'&size='+data.size+'&sort=id,desc&deleted=0&status=0')
+		}
+	},
   }
 }

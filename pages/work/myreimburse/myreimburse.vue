@@ -66,7 +66,7 @@ export default {
 		  };
 	},
 	onLoad(e) {
-		this.$minApi.appApplicationDocumentsQuery(this.page).then(res=>{
+		this.$minApi.appReimbursementDocumentsQuery(this.page).then(res=>{
 		  this.totalElements[0]=res.totalElements;
 		  this.list[0]=res.content;
 			this.$forceUpdate();
@@ -74,7 +74,7 @@ export default {
 			console.log("error");
 			})
 	    this.page.my=1;
-		this.$minApi.appApplicationDocumentsQuery(this.page).then(res=>{
+		this.$minApi.appReimbursementDocumentsQuery(this.page).then(res=>{
 			  this.totalElements[1]=res.totalElements;
 			  this.list[1]=res.content;
 				this.$forceUpdate();
@@ -115,7 +115,7 @@ export default {
 				var that = this
 				this.page.my=this.currentTab;
 				//refresh data
-				this.$minApi.appApplicationDocumentsQuery(this.page).then(res=>{
+				this.$minApi.appReimbursementDocumentsQuery(this.page).then(res=>{
 				  this.totalElements[this.currentTab]=res.totalElements;
 				  let newData =res.content;
 				  console.log(res);
