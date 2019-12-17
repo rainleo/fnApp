@@ -66,7 +66,17 @@ class MinRequest {
       options.fail= function (err) {
         reject(MinRequest[requestAfter](err))
       }
-      uni.request(options)
+	  try{
+	  	uni.request(options)
+	  }catch(e){
+		console.log("unirequest error");
+		uni.showModal({
+			content: "网络异常，请稍后重试！",
+			confirmText: "确定",
+			showCancel: false,
+		})
+		return
+	  }
     })
   }
 

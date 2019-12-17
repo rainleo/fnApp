@@ -72,6 +72,7 @@ export default {
 		  this.list[0]=res.content;
 			this.$forceUpdate();
 		}).catch(err =>{
+			console.log(err);
 			console.log("error");
 			})
 	    this.page.my=1;

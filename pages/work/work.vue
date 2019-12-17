@@ -224,7 +224,7 @@
 			myTodo: function () {
 			    console.log("todo");
 				this.$minApi.appTodoList(JSON.stringify(this.page)).then(res=>{
-					for (let i = 0; i < res.content.length; i++) {
+					for (let i = 0; i < 3; i++) {//res.content.length
 						console.log(res.content[i]);
 						this.records[i].title= res.content[i].todoAbstract;
 						this.records[i].mainTeacher=res.content[i].copyPerson.username;

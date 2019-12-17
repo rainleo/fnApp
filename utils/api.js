@@ -8,8 +8,10 @@ const websiteUrl = 'http://localhost:8000';
 minRequest.interceptors.request((request) => {
 	console.log("添加token");
 	const value = cache.get('_loginFlag');
-	if (value) {
+	console.log("token"+cache.get('_token'));
+	if (value&&cache.get('_token')) {
 		if (value == true) {
+			console.log("token added");
 			request.header={...request.header,...{'Authorization':'Bearer '+cache.get('_token')}}
 		} 
 	}
